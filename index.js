@@ -72,7 +72,7 @@ function merge(obj1, obj2){
     return obj3;
 }
 
-function request(method, url, param, header, callback) {
+function request(method, url, param, header, callback) {//{{{
     var len, req, options = {}, urlInfo, resp = "", fUrl = "", isSync = false, defer;
     if (typeof(callback) === "undefined"
         && typeof(header) != "undefined" 
@@ -137,6 +137,7 @@ function request(method, url, param, header, callback) {
         });
     });
     q.on("error", function(err) {
+        err = JSON.stringify(err);
         if (true === isSync) {
             defer.reject(err);
         } else {
@@ -151,7 +152,7 @@ function request(method, url, param, header, callback) {
 
     if (true === isSync) return defer.promise;
     return true;
-}
+}//}}}
 
 var publicMethods = ['request'];
 var privateMethods = ['parseUrl'];

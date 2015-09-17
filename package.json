@@ -1,7 +1,7 @@
 {
-  "name": "simpleHttp",
+  "name": "light-http",
   "version": "1.0.0",
-  "description": "",
+  "description": "A really light library for HTTP request.",
   "main": "index.js",
   "files": [
     "package.json", "index.js"
