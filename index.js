@@ -124,41 +124,30 @@ function request(method, url, param, header, callback) {
     //console.log(options);
 
     options.headers = header;
-    try {
-        var q = req.request(options, function (r) {
-            r.on("data", function (chunk) {
-                resp += chunk;
-            });
-            r.on("end", function () {
-                if (true === isSync) {
-                    defer.resolve(resp);
-                } else {
-                    callback(resp);
-                }
-            });
-            r.on("error", function(err) {
-                if (true === isSync) {
-                    defer.reject(err);
-                } else {
-                    callback(err);
-                }
-            });
+    var q = req.request(options, function (r) {
+        r.on("data", function (chunk) {
+            resp += chunk;
         });
-
-        if ("POST" === method) {
-            q.write(postData);
-        }
-        q.end();
-    } catch (E) {
-        console.log("simpleHTTP Got exception when it try to connect to a web service.");
-        console.log(E);
+        r.on("end", function () {
+            if (true === isSync) {
+                defer.resolve(resp);
+            } else {
+                callback(resp);
+            }
+        });
+    });
+    q.on("error", function(err) {
         if (true === isSync) {
-            defer.reject(E);
+            defer.reject(err);
         } else {
-            callback(E);
+            callback(err);
         }
+    });
 
+    if ("POST" === method) {
+        q.write(postData);
     }
+    q.end();
 
     if (true === isSync) return defer.promise;
     return true;
