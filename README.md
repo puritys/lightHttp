@@ -1,0 +1,44 @@
+
+
+Asynchronous
+-----------------
+
+<pre>
+var client = require('simpleHttp');
+var header = {"user-agent": "Mozilla/5.0 xx"};
+var url = "https://www.google.com.tw";
+
+// Method GET
+client.request('get', url, {"key":"value"}, header, function(response) {
+    xxx
+});
+
+// Method POST
+client.request('post', url, {"key":"value"}, header, function(response) {
+    xxx
+});
+
+</pre>
+
+Synchronous
+-----------------
+
+<pre>
+var client = require('simpleHttp');
+var header = {"user-agent": "Mozilla/5.0 xx"};
+var url = "https://www.google.com.tw";
+
+// Method GET
+client.request('get', url, {"key":"value"}, header)
+.then(function(response) {
+    xxx
+});
+
+// Method POST
+client.request('post', url, {"key":"value"}, header)
+.then(function(response) {
+    xxx
+});
+
+</pre>
+
