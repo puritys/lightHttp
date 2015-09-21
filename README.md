@@ -1,10 +1,13 @@
 
 
+* npm install -g light-http
+
+
 Asynchronous
 -----------------
 
 <pre>
-var client = require('simpleHttp');
+var client = require('lightHttp');
 var header = {"user-agent": "Mozilla/5.0 xx"};
 var url = "https://www.google.com.tw";
 
@@ -24,7 +27,7 @@ Synchronous
 -----------------
 
 <pre>
-var client = require('simpleHttp');
+var client = require('lightHttp');
 var header = {"user-agent": "Mozilla/5.0 xx"};
 var url = "https://www.google.com.tw";
 
