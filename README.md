@@ -7,7 +7,7 @@ Asynchronous
 -----------------
 
 <pre>
-var client = require('lightHttp');
+var client = require('light-http');
 var header = {"user-agent": "Mozilla/5.0 xx"};
 var url = "https://www.google.com.tw";
 
@@ -27,7 +27,7 @@ Synchronous
 -----------------
 
 <pre>
-var client = require('lightHttp');
+var client = require('light-http');
 var header = {"user-agent": "Mozilla/5.0 xx"};
 var url = "https://www.google.com.tw";
 
