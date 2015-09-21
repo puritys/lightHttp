@@ -51,8 +51,8 @@ client.request('post', url, {"key":"value"}, header)
 
 
 
-HTTP Request Eerror
--------------------
+HTTP Request Error Handling
+----------------------------
 <pre>
 { [Error: connect ENETUNREACH] code: 'ENETUNREACH', errno: 'ENETUNREACH', syscall: 'connect' }
 </pre>
