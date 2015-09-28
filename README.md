@@ -12,8 +12,8 @@ npm install -g light-http
 
 ## Example 
 
-Asynchronous
------------------
+### Asynchronous 
+
 
 <pre>
 var client = require('light-http');
@@ -32,8 +32,7 @@ client.request('post', url, {"key":"value"}, header, function(response) {
 
 </pre>
 
-Synchronous
------------------
+### Synchronous
 
 <pre>
 var client = require('light-http');
