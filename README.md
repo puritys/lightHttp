@@ -2,7 +2,9 @@
 [[light-http NPM] (https://www.npmjs.com/package/light-http)]
 
 
-Light-http is a very light library could easily make a http & https request.
+Light-http is a very light library it could easily make a http & https request, also support asynchrous and synchrous at the same time.
+
+Let's try it !
 
 
 ## How to install light http 
