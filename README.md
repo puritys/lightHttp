@@ -1,7 +1,14 @@
 
+[[light-http NPM] (https://www.npmjs.com/package/light-http)]
 
-* npm install -g light-http
 
+Light-http is a very light library could easily make a http & https request.
+
+
+## How to install light http 
+npm install -g light-http
+
+## Example 
 
 Asynchronous
 -----------------
