@@ -55,8 +55,55 @@ client.request('post', url, {"key":"value"}, header)
 
 
 
+### Make a Raw HTTP request
+<pre>
+var http = require('light-http');
+var host = "www.google.com.tw";
+var port = 80;
+var path = "/";
+var cookie = 'SID=; HSID=; SSID=jjj; APISID=;';
+var msg = [
+"GET " + path + " HTTP/1.1",
+"host: " + host,
+"cookie: " + cookie,
+"\r\n"].join("\r\n");
 
+http.rawRequest(host, port, msg)
+.then(function (resp) {
+    console.log(resp);
+});
 
+//http.rawRequest(host, port, msg, function (resp) {
+//    console.log(resp);
+//});
+
+</pre>
+
+### Make a Raw HTTPS request
+
+You have two ways to indicate this library to use https protocol
+
+1. Set the port to be "443:ssl".
+2. Add https:// before the value of host.
+
+<pre>
+var http = require('light-http');
+var host = "www.google.com.tw";
+var url = "https://" + host;
+var port = 443; // or port = "443:ssl"
+var path = "/";
+var cookie = 'SID=; HSID=; SSID=jjj; APISID=;';
+var msg = [
+"GET " + path + " HTTP/1.1",
+"host: " + host,
+"cookie: " + cookie,
+"\r\n"].join("\r\n");
+
+http.rawRequest(url, port, msg)
+.then(function (resp) {
+    console.log(resp);
+});
+</pre>
 
 
 HTTP Request Error Handling

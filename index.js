@@ -1,6 +1,10 @@
 var http = require('http');
 var https = require('https');
+var net = require('net');
+var tls = require('tls');
+var fs = require('fs');
 var Q = require('q');
+var debugMode = false;
 
 function parseUrl(url) {//{{{
     var i, n, pm, pos, key, value;
@@ -56,6 +60,14 @@ function parseUrl(url) {//{{{
 
     return ret;
 }//}}}
+
+function disableDebugMode() {
+    debugMode = false;
+}
+
+function enableDebugMode() {
+    debugMode = true;
+}
 
 function stringifyParam(param) {
     var str = "";
@@ -154,10 +166,65 @@ function request(method, url, param, header, callback) {//{{{
     return true;
 }//}}}
 
+function rawRequest(host, port, content, callback) {//{{{
+    var defer, client, response = "", isSync = false, isSSL = false, socket = net, options = {};
+
+    if (typeof(callback) === "undefined") {
+        isSync = true;
+    }
+
+    if ((host.length > 4 
+        && host.substr(0, 5).toLowerCase() == "https")
+        ||
+        (port.toString().match(/:ssl/))
+       ) {
+        isSSL = true;
+        socket = tls;
+        port = parseInt(port, 10);
+    }
+
+    host = host.replace(/^https?:\/\//, '');
+    host = host.replace(/\/.*$/, '');
+
+    if (true === debugMode) console.log("Request content: \r\n" + content);
+
+    if (true === isSync) defer = Q.defer();
+
+    client = socket.connect({host: host, port: port}, options, function (data) {
+        client.write(content);
+    });
+
+    client.on("data", function (resp) {
+        response += resp;
+        client.end();
+    });
+
+    client.on("end", function () {
+        if (true === isSync) defer.resolve(response);
+        else callback(response);
+    });
+
+    client.on("error", function(err) {
+        if (true === isSync) {
+            defer.reject(err);
+        } else {
+            callback(err);
+        }
+    });
+
+
+    if (true === isSync) return defer.promise;
+
+}//}}}
+
 var publicMethods = ['request'];
 var privateMethods = ['parseUrl'];
 
 exports.request = request;
+exports.rawRequest = rawRequest;
+exports.enableDebugMode = enableDebugMode;
+exports.disableDebugMode = disableDebugMode;
+
 if (typeof(UNIT_TEST) != "undefined") {
     exports.parseUrl = parseUrl;
 }
