@@ -5,13 +5,19 @@
 * obj.ajax("testGet", {"test":1}, function (content) {});
 * obj.ajaxPost("testPost.php", {"test": 1, "test2": 2},{}, function (content) {});
 
+//Redirect to another url.
+* obj.get("testGet", {"test":1}); 
+* obj.post("testPost.php", {"test":1});
+
 *****/
     function lightHttp() {
         if (!window.lightHttpLib) {
             console.log("Missing library named window.lightHttpLib");
         }
+        this.jsonpIndex = 1;
         this.lightHttpLib = window.lightHttpLib;
         this.timeout = 15000; //15 seconds
+        this.jsonpCallbackList = {};
     }
     var o = lightHttp.prototype;
 
@@ -20,12 +26,21 @@
         window.location.href = url;
     };
 
-    o.post = function () {
-        var args = ["post"];
-        for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
-        this.request.apply(this, args);
-
-    };
+    o.post = function (url, param) {//{{{
+        var form, key, input;
+        form = document.createElement('form');
+        form.action = url
+        form.method = "POST";
+        for (key in param) {
+            if (!param.hasOwnProperty(key)) continue;
+            input = document.createElement('input');
+            input.name = key;
+            input.value = param[key];
+            form.appendChild(input);
+        }
+        document.body.appendChild(form);
+        form.submit();
+    };//}}}
 
     /**
      * ajax: make a ajax request
@@ -51,10 +66,24 @@
         this.request.apply(this, args);
     };
 
-    o.jsonp = function () {
-        var args = ["jsonp", "GET"];
-        for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
-        this.request.apply(this, args);
+    o.jsonp = function (url, param, header, callback) {
+        var script, jsonpCallback, self;
+        if (!param) param = {};
+        this.cleanJsonpCallback();
+        self = this;
+        jsonpCallback = "lightHttp_jsonp_" + this.jsonpIndex + "_" + (new Date).getTime();
+        param['callback'] = jsonpCallback;
+        window[jsonpCallback] = function(data) {
+            callback(data, {});
+            self.jsonpCallbackList[jsonpCallback] = 1;
+        };
+        this.jsonpCallbackList[jsonpCallback] = 0;
+        url = this.lightHttpLib.addParams(url, param);
+        if (typeof(header) == "function") callback = header;
+        script = document.createElement('script');
+        script.src = url;
+        document.body.appendChild(script);
+        this.jsonpIndex++;
     };
 
     /*
@@ -143,7 +172,6 @@
         //xhr.getResponseHeader("Connection")
         //header = xhr.getAllResponseHeaders();
         if (xhr.readyState == 4) {
-            if (true == args.isTimeout) return "";
             respInfo = xhr;
             resp = xhr.responseText;
             if (args.callback) args.callback(resp, respInfo);
@@ -158,6 +186,23 @@
         //respInfo.status = 408;
         //if (args.callback) args.callback("", respInfo);
     };//}}}
+
+    o.jsonpHander = function () {
+
+    };
+
+    /**
+     * remove jsonp callback function from window to prevent memory leak.
+     */
+    o.cleanJsonpCallback = function () {
+        var func;
+        for (func in this.jsonpCallbackList) {
+            if (this.jsonpCallbackList[func] === 1) {
+                //console.log("delete  jsonp callback = " + func);
+                delete window[func];
+            }
+        }
+    };
 
     window.lightHttp = lightHttp;
 }())

@@ -149,3 +149,20 @@ obj.ajaxPost("test.php", {"count": 20}, function (content) {
 &lt;/html>
 </pre>
 
+JSONP
+------
+<pre>
+&lt;html>
+&lt;script src="lightHttp.min.js"></script>
+&lt;script>
+var obj = new window.lightHttp();
+obj.jsonp("testJsonp.php", {"test":1}, function (resp) {
+    console.log(resp);
+});
+
+&lt;/script>
+&lt;/html>
+</pre>
+
+
+

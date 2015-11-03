@@ -66,7 +66,7 @@
             return str.join('&');
         },//}}}
 
-        addParams: function (url, params) {
+        addParams: function (url, params) {//{{{
             var paramStr;
             paramStr = this.stringifyParam(params);
             if (!paramStr) return url;
@@ -77,7 +77,7 @@
             }
             url += paramStr;
             return url;
-        }
+        }//}}}
     };
 
     if (typeof(window) != "undefined") {
