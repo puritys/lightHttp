@@ -126,6 +126,7 @@ AJAX (GET)
 &lt;html>
 &lt;script src="lightHttp.min.js"></script>
 &lt;script>
+var obj = new window.lightHttp();
 obj.ajax("test.html", {"count": 20}, function (content) {
     console.log(content);
 });
@@ -140,6 +141,7 @@ AJAX (POST)
 &lt;html>
 &lt;script src="lightHttp.min.js"></script>
 &lt;script>
+var obj = new window.lightHttp();
 obj.ajaxPost("test.php", {"count": 20}, function (content) {
     console.log(content);
 });
