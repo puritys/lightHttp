@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../../lib.js"></script>
+    <script src="../../lightHttp.js"></script>
+
+</head>
+<body>
+
+<script>
+
+var obj = new window.lightHttp();
+obj.ajax("testGet", {"test":1},{}, function (content) {
+    console.log("[Ajax GET] Run callback: content = ");
+    console.log(content);
+});
+
+obj.ajax("testGet?test=1", {"test":1}, function (content) {
+    console.log("[Ajax GET] Run callback: content = ");
+    console.log(content);
+});
+
+obj.ajaxPost("testPost.php", {"test": 1, "test2": 2},{}, function (content) {
+    console.log("[POST] Run callback: content = ");
+    console.log(content);
+});
+
+obj.ajax("testTimeout.php", {},{}, {"timeout": 1000}, function (content, respInfo) {
+    console.log("[GET timeout] Run callback: content = ");
+    console.log(respInfo);
+//    console.log(content);
+});
+
+</script>
+</body>
+</html>

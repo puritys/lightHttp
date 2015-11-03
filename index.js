@@ -5,61 +5,62 @@ var tls = require('tls');
 var fs = require('fs');
 var Q = require('q');
 var debugMode = false;
+var lib = require('./lib.js');
 
-function parseUrl(url) {//{{{
-    var i, n, pm, pos, key, value;
-    var regUrl, matches, ret, param = {};
-    regUrl = /(https?):\/\/([a-z0-9][a-z0-9\-\.]+[a-z0-9])(:[0-9]+)?(\/[^\?]*)\??(.*)/i;
-    ret = {
-        port: 80,
-        protocol: "",
-        host: "",
-        path: "",
-        param: ""
-    };
-    matches = url.match(regUrl);
-    if (matches && matches[2]) {
-        ret['protocol'] = matches[1].toLowerCase();
-        ret['host'] = matches[2];
-    }
-
-    if (matches && matches[3] && matches[3] != "undefined") {
-        ret['port'] = parseInt(matches[3].substr(1), 10);
-    } else {
-        if ("https" === ret.protocol) {
-            ret['port'] = 443;
-        }
-    }
-
-    if (matches && !matches[4]) {
-        ret['path'] = "/";
-    } else {
-        ret['path'] = matches[4];
-
-    }
-
-    if (matches && matches[5]) {
-        pm = matches[5].split(/&/);
-        n = pm.length;
-        for (i = 0; i < n; i++) {
-            pos = pm[i].indexOf("=");
-            key = pm[i].substr(0, pos);
-            value = pm[i].substr(pos + 1, pm[i].length - pos - 1);
-            if (param[key]) {
-                if (Object.prototype.toString.call(param[key]) === '[object Array]') {
-                    param[key].push(value);
-                } else {
-                    param[key] = [param[key], value];
-                }
-            } else {
-                param[key] = value;
-            }
-        }
-        ret['param'] = param;
-    }
-
-    return ret;
-}//}}}
+//function parseUrl(url) {//{{{
+//    var i, n, pm, pos, key, value;
+//    var regUrl, matches, ret, param = {};
+//    regUrl = /(https?):\/\/([a-z0-9][a-z0-9\-\.]+[a-z0-9])(:[0-9]+)?(\/[^\?]*)\??(.*)/i;
+//    ret = {
+//        port: 80,
+//        protocol: "",
+//        host: "",
+//        path: "",
+//        param: ""
+//    };
+//    matches = url.match(regUrl);
+//    if (matches && matches[2]) {
+//        ret['protocol'] = matches[1].toLowerCase();
+//        ret['host'] = matches[2];
+//    }
+//
+//    if (matches && matches[3] && matches[3] != "undefined") {
+//        ret['port'] = parseInt(matches[3].substr(1), 10);
+//    } else {
+//        if ("https" === ret.protocol) {
+//            ret['port'] = 443;
+//        }
+//    }
+//
+//    if (matches && !matches[4]) {
+//        ret['path'] = "/";
+//    } else {
+//        ret['path'] = matches[4];
+//
+//    }
+//
+//    if (matches && matches[5]) {
+//        pm = matches[5].split(/&/);
+//        n = pm.length;
+//        for (i = 0; i < n; i++) {
+//            pos = pm[i].indexOf("=");
+//            key = pm[i].substr(0, pos);
+//            value = pm[i].substr(pos + 1, pm[i].length - pos - 1);
+//            if (param[key]) {
+//                if (Object.prototype.toString.call(param[key]) === '[object Array]') {
+//                    param[key].push(value);
+//                } else {
+//                    param[key] = [param[key], value];
+//                }
+//            } else {
+//                param[key] = value;
+//            }
+//        }
+//        ret['param'] = param;
+//    }
+//
+//    return ret;
+//}//}}}
 
 function disableDebugMode() {
     debugMode = false;
@@ -67,14 +68,6 @@ function disableDebugMode() {
 
 function enableDebugMode() {
     debugMode = true;
-}
-
-function stringifyParam(param) {
-    var str = "";
-    for (pro in param) {
-        str += pro + "=" + param[pro] + "&";
-    }
-    return str;
 }
 
 function merge(obj1, obj2){
@@ -101,7 +94,7 @@ function request(method, url, param, header, callback) {//{{{
         defer = Q.defer();
     }
     method = method.toUpperCase();
-    urlInfo = parseUrl(url);
+    urlInfo = lib.parseUrl(url);
     fUrl += urlInfo.path;
     if (typeof(param) === "undefined") {
         param = {};
@@ -112,11 +105,11 @@ function request(method, url, param, header, callback) {//{{{
     }
 
     if ("POST" === method && typeof(param) != "undefined") {
-        postData = stringifyParam(param);
+        postData = lib.stringifyParam(param);
         header['content-type'] = 'application/x-www-form-urlencoded';
         header['content-length'] = postData.length; 
     } else {
-        fUrl += "?" + stringifyParam(param);
+        fUrl += "?" + lib.stringifyParam(param);
     }
     options = {
         hostname: urlInfo.host,
