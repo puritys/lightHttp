@@ -116,20 +116,20 @@ HTTP Request Error Handling
 Using lightHttp library on browser
 =================================
 
-lightHttp library try to make the code be simplest.
+lightHttp library also support any browser in the world to quickly and easily make a ajax, pjax, jsonp.
 
 
 AJAX (GET)
 ----------
 
 <pre>
-<script src="lib.js"></script>
-<script src="lightHttp.js"></script>
-<script>
+&lt;script src="lib.js"></script>
+&lt;script src="lightHttp.js"></script>
+&lt;script>
 obj.ajax("test.html", {"count": 20}, function (content) {
     console.log(content);
 });
-</script>
+&lt;/script>
 
 
 </pre>
@@ -138,14 +138,12 @@ AJAX (POST)
 ----------
 
 <pre>
-<script src="lib.js"></script>
-<script src="lightHttp.js"></script>
-<script>
+&lt;script src="lib.js"></script>
+&lt;script src="lightHttp.js"></script>
+&lt;script>
 obj.ajaxPost("test.php", {"count": 20}, function (content) {
     console.log(content);
 });
-</script>
-
-
+&lt;/script>
 </pre>
 
