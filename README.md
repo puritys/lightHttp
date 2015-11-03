@@ -123,27 +123,27 @@ AJAX (GET)
 ----------
 
 <pre>
-&lt;script src="lib.js"></script>
-&lt;script src="lightHttp.js"></script>
+&lt;html>
+&lt;script src="lightHttp.min.js"></script>
 &lt;script>
 obj.ajax("test.html", {"count": 20}, function (content) {
     console.log(content);
 });
 &lt;/script>
-
-
+&lt;/html>
 </pre>
 
 AJAX (POST)
 ----------
 
 <pre>
-&lt;script src="lib.js"></script>
-&lt;script src="lightHttp.js"></script>
+&lt;html>
+&lt;script src="lightHttp.min.js"></script>
 &lt;script>
 obj.ajaxPost("test.php", {"count": 20}, function (content) {
     console.log(content);
 });
 &lt;/script>
+&lt;/html>
 </pre>
 
