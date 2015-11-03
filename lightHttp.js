@@ -15,10 +15,9 @@
     }
     var o = lightHttp.prototype;
 
-    o.get = function () {
-        var args = ["get"];
-        for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
-        this.request.apply(this, args);
+    o.get = function (url, param) {
+        url = this.lightHttpLib.addParams(url, param);
+        window.location.href = url;
     };
 
     o.post = function () {
@@ -28,10 +27,13 @@
 
     };
 
-
-    /*
-     * url, param, header, callback
-    */
+    /**
+     * ajax: make a ajax request
+     * @param string url
+     * @param object param
+     * @param object header
+     * @param function callback
+     */
     o.ajax = function () {
         var args = ["ajax", "GET"];
         for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
@@ -116,7 +118,7 @@
         }
     };//}}}
 
-    o.instantiateRequest = function () {
+    o.instantiateRequest = function () {//{{{
         var xhr;
         if (window.XMLHttpRequest) {
            xhr = new XMLHttpRequest();
@@ -133,27 +135,29 @@
            }
         }
         return xhr;
-    };
+    };//}}}
 
-    o.responseHandler = function(args, E) {
+    o.responseHandler = function(args, E) {//{{{
         var resp = "", respInfo = {}, xhr;
         xhr = E.target;
+        //xhr.getResponseHeader("Connection")
+        //header = xhr.getAllResponseHeaders();
         if (xhr.readyState == 4) {
             if (true == args.isTimeout) return "";
             respInfo = xhr;
             resp = xhr.responseText;
             if (args.callback) args.callback(resp, respInfo);
         }
-    };
+    };//}}}
 
-    o.timeoutHandler = function (args) {
+    o.timeoutHandler = function (args) {//{{{
         //var respInfo = {};
         //console.log("timeout");
         //args.isTimeout = true;
         //respInfo.errMsg = "timeout";
         //respInfo.status = 408;
         //if (args.callback) args.callback("", respInfo);
-    };
+    };//}}}
 
     window.lightHttp = lightHttp;
 }())

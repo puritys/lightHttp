@@ -1,0 +1,7 @@
+
+global.window = {
+    "location": {
+        "href": ""
+    }
+};
+

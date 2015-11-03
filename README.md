@@ -111,3 +111,41 @@ HTTP Request Error Handling
 <pre>
 { [Error: connect ENETUNREACH] code: 'ENETUNREACH', errno: 'ENETUNREACH', syscall: 'connect' }
 </pre>
+
+
+Using lightHttp library on browser
+=================================
+
+lightHttp library try to make the code be simplest.
+
+
+AJAX (GET)
+----------
+
+<pre>
+<script src="lib.js"></script>
+<script src="lightHttp.js"></script>
+<script>
+obj.ajax("test.html", {"count": 20}, function (content) {
+    console.log(content);
+});
+</script>
+
+
+</pre>
+
+AJAX (POST)
+----------
+
+<pre>
+<script src="lib.js"></script>
+<script src="lightHttp.js"></script>
+<script>
+obj.ajaxPost("test.php", {"count": 20}, function (content) {
+    console.log(content);
+});
+</script>
+
+
+</pre>
+

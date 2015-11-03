@@ -61,10 +61,23 @@
         stringifyParam: function(param) {//{{{
             var str = [];
             for (var pro in param) {
-                str.push(pro + "=" + param[pro]);
+                str.push(pro + "=" + encodeURIComponent(param[pro]));
             }
             return str.join('&');
-        }//}}}
+        },//}}}
+
+        addParams: function (url, params) {
+            var paramStr;
+            paramStr = this.stringifyParam(params);
+            if (!paramStr) return url;
+            if (url.match(/\?/)) {
+                url += "&";
+            } else {
+                url += "?";
+            }
+            url += paramStr;
+            return url;
+        }
     };
 
     if (typeof(window) != "undefined") {
