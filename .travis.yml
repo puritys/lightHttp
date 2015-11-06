@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - "0.12"
+  - "4.1.1"
+
+os:
+  :windowsxp
+  :linux
+  
+before_script:
+  - "npm install nan"
+  - "npm build  ./"
+
+
+script:
+  - "istanbul cover _mocha -- -R spec tests/unit/*.js" 
+  - "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
