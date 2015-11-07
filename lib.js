@@ -80,11 +80,7 @@
         }//}}}
     };
 
-    if (typeof(window) != "undefined") {
-        window.lightHttpLib = lib;
-    } else {
-        module = module.exports = lib;
-    }
+    module = module.exports = lib;
 }());
 
 

@@ -1,5 +1,6 @@
 "use strict";
 
+var lib = require('./lib.js');
 (function () {
 /****
 * obj.ajax("testGet", {"test":1}, function (content) {});
@@ -15,7 +16,7 @@
             console.log("Missing library named window.lightHttpLib");
         }
         this.jsonpIndex = 1;
-        this.lightHttpLib = window.lightHttpLib;
+        this.lightHttpLib = lib;//window.lightHttpLib;
         this.timeout = 15000; //15 seconds
         this.jsonpCallbackList = {};
     }

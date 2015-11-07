@@ -33,7 +33,7 @@ client.request('post', url, {"key":"value"}, header, function(response) {
 
 </pre>
 
-### Synchronous
+### Synchronous - Using Promise
 
 <pre>
 var client = require('light-http');
