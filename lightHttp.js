@@ -1,3 +1,5 @@
+Function.prototype.bind=Function.prototype.bind||function(b){if(typeof this!=="function"){throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");}var a=Array.prototype.slice,f=a.call(arguments,1),e=this,c=function(){},d=function(){return e.apply(this instanceof c?this:b||window,f.concat(a.call(arguments)));};c.prototype=this.prototype;d.prototype=new c();return d;};
+
 "use strict";
 
 var lib = require('./lib.js');
@@ -11,21 +13,21 @@ var lib = require('./lib.js');
 * obj.post("testPost.php", {"test":1});
 
 *****/
-    function lightHttp() {
-        if (!window.lightHttpLib) {
-            console.log("Missing library named window.lightHttpLib");
+    function lightHttp() {//{{{
+        if (!lib) {
+            console.log("Missing library named lightHttpLib");
         }
         this.jsonpIndex = 1;
-        this.lightHttpLib = lib;//window.lightHttpLib;
+        this.lightHttpLib = lib; //window.lightHttpLib;
         this.timeout = 15000; //15 seconds
         this.jsonpCallbackList = {};
-    }
+    }//}}}
     var o = lightHttp.prototype;
 
-    o.get = function (url, param) {
+    o.get = function (url, param) {//{{{
         url = this.lightHttpLib.addParams(url, param);
         window.location.href = url;
-    };
+    };//}}}
 
     o.post = function (url, param) {//{{{
         var form, key, input;
@@ -50,24 +52,25 @@ var lib = require('./lib.js');
      * @param object header
      * @param function callback
      */
-    o.ajax = function () {
+    o.ajax = function () {//{{{
         var args = ["ajax", "GET"];
         for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
         this.request.apply(this, args);
-    };
-    o.ajaxpost = o.ajaxPost = function () {
+    };//}}}
+
+    o.ajaxpost = o.ajaxPost = function () {//{{{
         var args = ["ajaxPost", "POST"];
         for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
         this.request.apply(this, args);
-    };
+    };//}}}
 
-    o.pajax = function () {
+    o.pajax = function () {//{{{
         var args = ["pjax", "GET"];
         for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
         this.request.apply(this, args);
-    };
+    };//}}}
 
-    o.jsonp = function (url, param, header, callback) {
+    o.jsonp = function (url, param, header, callback) {//{{{
         var script, jsonpCallback, self;
         if (!param) param = {};
         this.cleanJsonpCallback();
@@ -85,50 +88,52 @@ var lib = require('./lib.js');
         script.src = url;
         document.body.appendChild(script);
         this.jsonpIndex++;
-    };
+    };//}}}
 
     /*
      * type, url, param, header, callback
     */
     o.request = function () {//{{{
         var type = "GET", xhr, url, param, header, name,
-            callback, postData = "", async = true, options = {};
+            callback, postData = "", async = true, options = {}, args = {};
         var respHandler, timeoutHandler;
-        var argKeys = ["name", "type", "url", "param", "header", "callback"], i, length, args = {};
         if (!arguments) return "";
-        if (arguments[0]) name = arguments[0];
-        if (arguments[1]) type = arguments[1];
-        if (arguments[2]) url = arguments[2];
-        if (arguments[3]) param = arguments[3];
-        if (arguments[4]) {
+        if (typeof(arguments[0]) != "undefined") name = arguments[0];
+        if (typeof(arguments[1]) != "undefined") type = arguments[1];
+        if (typeof(arguments[2]) != "undefined") url = arguments[2];
+        if (typeof(arguments[3]) != "undefined") param = arguments[3];
+        if (typeof(arguments[4]) != "undefined") {
             if (typeof(arguments[4]) == "function") {
                 callback = arguments[4];
             } else {
                 header = arguments[4];
             }
         }
-        if (arguments[5]) {
+        if (typeof(arguments[5]) != "undefined") {
             if (typeof(arguments[5]) == "function") {
                 callback = arguments[5];
             } else {
                 options = arguments[5];
             }
         }
-        if (arguments[6]) callback = arguments[6];
+        if (typeof(arguments[6]) != "undefined") callback = arguments[6];
 
         if (callback) args.callback = callback;
         if (param) args.param = param;
 
         xhr = this.instantiateRequest();
+        args.xhr = xhr;
         respHandler = this.responseHandler.bind(this, args);
         timeoutHandler = this.timeoutHandler.bind(this, args);
 
-        if (options.timeout) {
-            xhr.timeout = options.timeout;
-        } else {
-            xhr.timeout = this.timeout;
+        if (xhr.timeout) {
+            if (options.timeout) {
+                xhr.timeout = options.timeout;
+            } else {
+                xhr.timeout = this.timeout;
+            }
+            xhr.ontimeout = timeoutHandler;
         }
-        xhr.ontimeout = timeoutHandler;
         xhr.onreadystatechange = respHandler;
 
 
@@ -167,9 +172,9 @@ var lib = require('./lib.js');
         return xhr;
     };//}}}
 
-    o.responseHandler = function(args, E) {//{{{
+    o.responseHandler = function(args) {//{{{
         var resp = "", respInfo = {}, xhr;
-        xhr = E.target;
+        xhr = args.xhr;
         //xhr.getResponseHeader("Connection")
         //header = xhr.getAllResponseHeaders();
         if (xhr.readyState == 4) {
@@ -200,7 +205,9 @@ var lib = require('./lib.js');
         for (func in this.jsonpCallbackList) {
             if (this.jsonpCallbackList[func] === 1) {
                 //console.log("delete  jsonp callback = " + func);
-                delete window[func];
+                try {
+                    delete window[func];
+                } catch (e) {}
             }
         }
     };

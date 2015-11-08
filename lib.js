@@ -78,6 +78,7 @@
             url += paramStr;
             return url;
         }//}}}
+
     };
 
     module = module.exports = lib;

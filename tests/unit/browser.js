@@ -5,7 +5,7 @@ var lib = require('./../../lib.js');
 var lightHttp = require('./../../lightHttp.js');
 var obj = new window.lightHttp();
 
-describe("get", function () {
+describe("Test Browser Get", function () {
 
     it("without parameters", function () {
         obj.get("test");
