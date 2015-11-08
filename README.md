@@ -42,15 +42,15 @@ var url = "https://www.google.com.tw";
 
 // Method GET
 http.get(url, {"key":"value"}, header)
-.then(function(response) {
-    xxx
-});
+    .then(function(response) {
+        xxx
+    });
 
 // Method POST
 http.post(url, {"key":"value"}, header)
-.then(function(response) {
-    xxx
-});
+    .then(function(response) {
+        xxx
+    });
 
 </pre>
 
@@ -182,4 +182,4 @@ http.jsonp("testJsonp.php", {"test":1}, function (resp) {
 </pre>
 
 
-
+http://puritys.github.io/lightHttp/
