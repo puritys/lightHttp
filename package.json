@@ -4,17 +4,26 @@
   "description": "A really light library for HTTP request.",
   "main": "index.js",
   "files": [
-    "package.json", "index.js", "lib.js"
+    "package.json",
+    "index.js",
+    "lib.js"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "http", "https", "get", "post", "request"
+    "http",
+    "https",
+    "get",
+    "post",
+    "request"
   ],
   "author": "puritys",
   "license": "MIT",
   "dependencies": {
     "q": "^1.4.1"
+  },
+  "devDependencies": {
+    "jshint": "^2.8.0"
   }
 }

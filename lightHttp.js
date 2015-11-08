@@ -1,8 +1,9 @@
+"use strict";
 Function.prototype.bind=Function.prototype.bind||function(b){if(typeof this!=="function"){throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");}var a=Array.prototype.slice,f=a.call(arguments,1),e=this,c=function(){},d=function(){return e.apply(this instanceof c?this:b||window,f.concat(a.call(arguments)));};c.prototype=this.prototype;d.prototype=new c();return d;};
 
-"use strict";
-
 var lib = require('./lib.js');
+var Q = require('q');
+
 (function () {
 /****
 * obj.ajax("testGet", {"test":1}, function (content) {});
@@ -32,7 +33,7 @@ var lib = require('./lib.js');
     o.post = function (url, param) {//{{{
         var form, key, input;
         form = document.createElement('form');
-        form.action = url
+        form.action = url;
         form.method = "POST";
         for (key in param) {
             if (!param.hasOwnProperty(key)) continue;
@@ -55,19 +56,19 @@ var lib = require('./lib.js');
     o.ajax = function () {//{{{
         var args = ["ajax", "GET"];
         for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
-        this.request.apply(this, args);
+        return this.request.apply(this, args);
     };//}}}
 
     o.ajaxpost = o.ajaxPost = function () {//{{{
         var args = ["ajaxPost", "POST"];
         for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
-        this.request.apply(this, args);
+        return this.request.apply(this, args);
     };//}}}
 
     o.pajax = function () {//{{{
         var args = ["pjax", "GET"];
         for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
-        this.request.apply(this, args);
+        return this.request.apply(this, args);
     };//}}}
 
     o.jsonp = function (url, param, header, callback) {//{{{
@@ -75,7 +76,7 @@ var lib = require('./lib.js');
         if (!param) param = {};
         this.cleanJsonpCallback();
         self = this;
-        jsonpCallback = "lightHttp_jsonp_" + this.jsonpIndex + "_" + (new Date).getTime();
+        jsonpCallback = "lightHttp_jsonp_" + this.jsonpIndex + "_" + (new Date()).getTime();
         param['callback'] = jsonpCallback;
         window[jsonpCallback] = function(data) {
             callback(data, {});
@@ -95,7 +96,8 @@ var lib = require('./lib.js');
     */
     o.request = function () {//{{{
         var type = "GET", xhr, url, param, header, name,
-            callback, postData = "", async = true, options = {}, args = {};
+            callback, postData = "", async = true, defer, isPromise = false,
+            options = {}, args = {};
         var respHandler, timeoutHandler;
         if (!arguments) return "";
         if (typeof(arguments[0]) != "undefined") name = arguments[0];
@@ -118,7 +120,15 @@ var lib = require('./lib.js');
         }
         if (typeof(arguments[6]) != "undefined") callback = arguments[6];
 
-        if (callback) args.callback = callback;
+        if (callback) {
+            args.callback = callback;
+        } else {
+            isPromise = true;
+            defer = Q.defer();
+            args.defer = defer;
+        }
+
+        args.isPromise = isPromise;
         if (param) args.param = param;
 
         xhr = this.instantiateRequest();
@@ -151,6 +161,9 @@ var lib = require('./lib.js');
             xhr.open(type, url, async);
             xhr.send();
         }
+        if (true === isPromise) {
+            return defer.promise;
+        }
     };//}}}
 
     o.instantiateRequest = function () {//{{{
@@ -166,7 +179,7 @@ var lib = require('./lib.js');
            } catch (e) {
               try {
                  xhr = new ActiveXObject("Microsoft.XMLHTTP");
-              } catch (e) {}
+              } catch (e2) {}
            }
         }
         return xhr;
@@ -180,7 +193,11 @@ var lib = require('./lib.js');
         if (xhr.readyState == 4) {
             respInfo = xhr;
             resp = xhr.responseText;
-            if (args.callback) args.callback(resp, respInfo);
+            if (true === args.isPromise) {
+                args.defer.resolve(resp, respInfo);
+            } else if (args.callback) {
+                args.callback(resp, respInfo);
+            }
         }
     };//}}}
 
@@ -213,4 +230,4 @@ var lib = require('./lib.js');
     };
 
     window.lightHttp = lightHttp;
-}())
+}());

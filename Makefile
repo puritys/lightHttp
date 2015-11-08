@@ -18,11 +18,18 @@ browserify:
 	rm lightHttp-browserify.js
 
 watch:
-	gmake killWath
+	gmake killWatch
 	watchify lightHttp.js -o lightHttp.min.js &
 
 test:
 	mocha tests/unit/*.js
 	mocha tests/functional/*.js
+jshint:
+	node_modules/.bin/jshint -c jsHint.conf index.js
+	node_modules/.bin/jshint -c jsHint.conf lib.js
+	node_modules/.bin/jshint -c jsHint.conf lightHttp.js
+
+
+
 depInit:
 	sudo npm install -g browserify watchify 

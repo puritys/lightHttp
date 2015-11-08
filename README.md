@@ -135,6 +135,22 @@ obj.ajax("test.html", {"count": 20}, function (content) {
 &lt;/html>
 </pre>
 
+AJAX (GET) Promise
+----------
+
+<pre>
+&lt;html>
+&lt;script src="lightHttp.min.js"></script>
+&lt;script>
+var obj = new window.lightHttp();
+obj.ajax("test.html", {"count": 20})
+    .then(function (content) {
+        console.log(content);
+    });
+&lt;/script>
+&lt;/html>
+</pre>
+
 AJAX (POST)
 ----------
 

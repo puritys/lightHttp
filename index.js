@@ -1,3 +1,5 @@
+"use strict";
+
 var http = require('http');
 var https = require('https');
 var net = require('net');
@@ -6,61 +8,6 @@ var fs = require('fs');
 var Q = require('q');
 var debugMode = false;
 var lib = require('./lib.js');
-
-//function parseUrl(url) {//{{{
-//    var i, n, pm, pos, key, value;
-//    var regUrl, matches, ret, param = {};
-//    regUrl = /(https?):\/\/([a-z0-9][a-z0-9\-\.]+[a-z0-9])(:[0-9]+)?(\/[^\?]*)\??(.*)/i;
-//    ret = {
-//        port: 80,
-//        protocol: "",
-//        host: "",
-//        path: "",
-//        param: ""
-//    };
-//    matches = url.match(regUrl);
-//    if (matches && matches[2]) {
-//        ret['protocol'] = matches[1].toLowerCase();
-//        ret['host'] = matches[2];
-//    }
-//
-//    if (matches && matches[3] && matches[3] != "undefined") {
-//        ret['port'] = parseInt(matches[3].substr(1), 10);
-//    } else {
-//        if ("https" === ret.protocol) {
-//            ret['port'] = 443;
-//        }
-//    }
-//
-//    if (matches && !matches[4]) {
-//        ret['path'] = "/";
-//    } else {
-//        ret['path'] = matches[4];
-//
-//    }
-//
-//    if (matches && matches[5]) {
-//        pm = matches[5].split(/&/);
-//        n = pm.length;
-//        for (i = 0; i < n; i++) {
-//            pos = pm[i].indexOf("=");
-//            key = pm[i].substr(0, pos);
-//            value = pm[i].substr(pos + 1, pm[i].length - pos - 1);
-//            if (param[key]) {
-//                if (Object.prototype.toString.call(param[key]) === '[object Array]') {
-//                    param[key].push(value);
-//                } else {
-//                    param[key] = [param[key], value];
-//                }
-//            } else {
-//                param[key] = value;
-//            }
-//        }
-//        ret['param'] = param;
-//    }
-//
-//    return ret;
-//}//}}}
 
 function disableDebugMode() {
     debugMode = false;
@@ -71,24 +18,25 @@ function enableDebugMode() {
 }
 
 function merge(obj1, obj2){
-    var obj3 = {};
-    for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+    var obj3 = {}, attrname;
+    for (attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+    for (attrname in obj2) { obj3[attrname] = obj2[attrname]; }
     return obj3;
 }
 
 function request(method, url, param, header, callback) {//{{{
-    var len, req, options = {}, urlInfo, resp = "", fUrl = "", isSync = false, defer;
-    if (typeof(callback) === "undefined"
-        && typeof(header) != "undefined" 
-        && ( Object.prototype.toString.call(header) === "[object String]" 
-        || Object.prototype.toString.call(header) === "[object Function]")
+    var len, req, options = {}, urlInfo, resp = "", fUrl = "", 
+        isSync = false, defer, postData;
+    if (typeof(callback) === "undefined" && 
+        typeof(header) != "undefined" && 
+        ( Object.prototype.toString.call(header) === "[object String]" || 
+          Object.prototype.toString.call(header) === "[object Function]")
        ) {
         // User can miss the value of header, transfer header to callback.
         callback = header;
     }
-    if (typeof(callback) === "undefined"
-        || Object.prototype.toString.call(callback) !== "[object Function]"
+    if (typeof(callback) === "undefined" || 
+        Object.prototype.toString.call(callback) !== "[object Function]"
        ) {
         isSync = true;
         defer = Q.defer();
@@ -166,9 +114,9 @@ function rawRequest(host, port, content, callback) {//{{{
         isSync = true;
     }
 
-    if ((host.length > 4 
-        && host.substr(0, 5).toLowerCase() == "https")
-        ||
+    if ((host.length > 4 && 
+         host.substr(0, 5).toLowerCase() == "https"
+        ) ||
         (port.toString().match(/:ssl/))
        ) {
         isSSL = true;
@@ -218,7 +166,7 @@ exports.rawRequest = rawRequest;
 exports.enableDebugMode = enableDebugMode;
 exports.disableDebugMode = disableDebugMode;
 
-if (typeof(UNIT_TEST) != "undefined") {
-    exports.parseUrl = parseUrl;
-}
+//if (typeof(UNIT_TEST) != "undefined") {
+//    exports.parseUrl = parseUrl;
+//}
 

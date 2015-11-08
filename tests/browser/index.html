@@ -11,6 +11,23 @@
 <script>
 
 var obj = new window.lightHttp();
+
+/******* Promise   *********/
+obj.ajax("testGet", {"test":1},{})
+    .then(function (content) {
+        console.log("[Promise Ajax GET] Run callback: content = ");
+        console.log(content);
+    });
+
+obj.ajaxPost("testPost.php", {"test": 1, "test2": 2},{})
+    .then(function (content, respInfo) {
+        console.log("[Promise Ajax POST] Run callback: content = ");
+        console.log(content);
+        console.log(respInfo.getAllResponseHeaders());
+    });
+
+
+/********  Asyn: not promise  **********/
 obj.ajax("testGet", {"test":1},{}, function (content) {
     console.log("[Ajax GET] Run callback: content = ");
     console.log(content);
