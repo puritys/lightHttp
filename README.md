@@ -17,17 +17,17 @@ npm install -g light-http
 
 
 <pre>
-var client = require('light-http');
+var http = require('light-http');
 var header = {"user-agent": "Mozilla/5.0 xx"};
 var url = "https://www.google.com.tw";
 
 // Method GET
-client.request('get', url, {"key":"value"}, header, function(response) {
+http.get(url, {"key":"value"}, header, function(response) {
     xxx
 });
 
 // Method POST
-client.request('post', url, {"key":"value"}, header, function(response) {
+http.post(url, {"key":"value"}, header, function(response) {
     xxx
 });
 
@@ -36,18 +36,18 @@ client.request('post', url, {"key":"value"}, header, function(response) {
 ### Synchronous - Using Promise
 
 <pre>
-var client = require('light-http');
+var http = require('light-http');
 var header = {"user-agent": "Mozilla/5.0 xx"};
 var url = "https://www.google.com.tw";
 
 // Method GET
-client.request('get', url, {"key":"value"}, header)
+http.get(url, {"key":"value"}, header)
 .then(function(response) {
     xxx
 });
 
 // Method POST
-client.request('post', url, {"key":"value"}, header)
+http.post(url, {"key":"value"}, header)
 .then(function(response) {
     xxx
 });
@@ -70,9 +70,9 @@ var msg = [
 "\r\n"].join("\r\n");
 
 http.rawRequest(host, port, msg)
-.then(function (resp) {
-    console.log(resp);
-});
+    .then(function (resp) {
+        console.log(resp);
+    });
 
 //http.rawRequest(host, port, msg, function (resp) {
 //    console.log(resp);
@@ -101,9 +101,9 @@ var msg = [
 "\r\n"].join("\r\n");
 
 http.rawRequest(url, port, msg)
-.then(function (resp) {
-    console.log(resp);
-});
+    .then(function (resp) {
+        console.log(resp);
+    });
 </pre>
 
 
@@ -127,8 +127,8 @@ AJAX (GET)
 &lt;html>
 &lt;script src="lightHttp.min.js"></script>
 &lt;script>
-var obj = new window.lightHttp();
-obj.ajax("test.html", {"count": 20}, function (content) {
+var http = new window.lightHttp();
+http.ajax("test.html", {"count": 20}, function (content) {
     console.log(content);
 });
 &lt;/script>
@@ -142,8 +142,8 @@ AJAX (GET) Promise
 &lt;html>
 &lt;script src="lightHttp.min.js"></script>
 &lt;script>
-var obj = new window.lightHttp();
-obj.ajax("test.html", {"count": 20})
+var http = new window.lightHttp();
+http.ajax("test.html", {"count": 20})
     .then(function (content) {
         console.log(content);
     });
@@ -158,8 +158,8 @@ AJAX (POST)
 &lt;html>
 &lt;script src="lightHttp.min.js"></script>
 &lt;script>
-var obj = new window.lightHttp();
-obj.ajaxPost("test.php", {"count": 20}, function (content) {
+var http = new window.lightHttp();
+http.ajaxPost("test.php", {"count": 20}, function (content) {
     console.log(content);
 });
 &lt;/script>
@@ -172,8 +172,8 @@ JSONP
 &lt;html>
 &lt;script src="lightHttp.min.js"></script>
 &lt;script>
-var obj = new window.lightHttp();
-obj.jsonp("testJsonp.php", {"test":1}, function (resp) {
+var http = new window.lightHttp();
+http.jsonp("testJsonp.php", {"test":1}, function (resp) {
     console.log(resp);
 });
 

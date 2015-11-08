@@ -24,6 +24,24 @@ function merge(obj1, obj2){
     return obj3;
 }
 
+function get(url, param, header, callback) {//{{{
+    return request('GET', url, param, header, callback);
+};//}}}
+
+function post(url, param, header, callback) {//{{{
+    return request('POST', url, param, header, callback);
+};//}}}
+
+function deleteMethod(url, param, header, callback) {//{{{
+    return request('DELETE', url, param, header, callback);
+};//}}}
+
+function put(url, param, header, callback) {//{{{
+    return request('PUT', url, param, header, callback);
+};//}}}
+
+
+
 function request(method, url, param, header, callback) {//{{{
     var len, req, options = {}, urlInfo, resp = "", fUrl = "", 
         isSync = false, defer, postData;
@@ -34,7 +52,10 @@ function request(method, url, param, header, callback) {//{{{
        ) {
         // User can miss the value of header, transfer header to callback.
         callback = header;
+        header = {};
     }
+    if (typeof(header) === "undefined") header = {};
+
     if (typeof(callback) === "undefined" || 
         Object.prototype.toString.call(callback) !== "[object Function]"
        ) {
@@ -52,7 +73,10 @@ function request(method, url, param, header, callback) {//{{{
         param = merge(param, urlInfo.param);
     }
 
-    if ("POST" === method && typeof(param) != "undefined") {
+    if (("POST" === method ||
+         "PUT" === method
+        ) && 
+        typeof(param) != "undefined") {
         postData = lib.stringifyParam(param);
         header['content-type'] = 'application/x-www-form-urlencoded';
         header['content-length'] = postData.length; 
@@ -98,7 +122,8 @@ function request(method, url, param, header, callback) {//{{{
         }
     });
 
-    if ("POST" === method) {
+    if ("POST" === method ||
+        "PUT" === method) {
         q.write(postData);
     }
     q.end();
@@ -161,6 +186,10 @@ function rawRequest(host, port, content, callback) {//{{{
 var publicMethods = ['request'];
 var privateMethods = ['parseUrl'];
 
+exports.get = get;
+exports.post = post;
+exports.delete = deleteMethod;
+exports.put = put;
 exports.request = request;
 exports.rawRequest = rawRequest;
 exports.enableDebugMode = enableDebugMode;

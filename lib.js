@@ -5,7 +5,7 @@
         parseUrl: function(url) {//{{{
             var i, n, pm, pos, key, value;
             var regUrl, matches, ret, param = {};
-            regUrl = /(https?):\/\/([a-z0-9][a-z0-9\-\.]+[a-z0-9])(:[0-9]+)?(\/[^\?]*)\??(.*)/i;
+            regUrl = /(https?):\/\/([a-z0-9][a-z0-9\-\.]+[a-z0-9])(:[0-9]+)?(\/[^\?]*)?\??(.*)/i;
             ret = {
                 port: 80,
                 protocol: "",
@@ -31,7 +31,6 @@
                 ret['path'] = "/";
             } else {
                 ret['path'] = matches[4];
-
             }
 
             if (matches && matches[5]) {
