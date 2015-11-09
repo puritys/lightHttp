@@ -1,7 +1,7 @@
 
 [[light-http NPM] (https://www.npmjs.com/package/light-http)]
 
-Travis CI status: [![Unit testing](https://travis-ci.org/puritys/lightHttp.png?branch=master)](https://travis-ci.org/puritys/lightHttp.svg)
+Travis CI status: [![Unit testing](https://travis-ci.org/puritys/lightHttp.png?branch=master)](https://travis-ci.org/puritys/lightHttp.svg) [![Coverage Status](https://coveralls.io/repos/puritys/lightHttp/badge.png?branch=master)](https://coveralls.io/r/puritys/lightHttp?branch=master)
 
 Light-http is a very light library it could easily make a http & https request, also support asynchronous and synchonrous at the same time.
 
