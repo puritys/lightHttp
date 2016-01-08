@@ -17,6 +17,11 @@ browserify:
 	java -jar  /usr/local/lib/java/yuicompressor-2.4.6.jar --charset utf8 --type js -o lightHttp.min.js  lightHttp-browserify.js
 	rm lightHttp-browserify.js
 
+compressWithoutQ:
+	browserify lightHttp.js  -o lightHttp-browserify.js
+	java -jar  /usr/local/lib/java/yuicompressor-2.4.6.jar --charset utf8 --type js -o lightHttp-simple.min.js  lightHttp-browserify.js
+	rm lightHttp-browserify.js
+
 watch:
 	gmake killWatch
 	watchify lightHttp.js -o lightHttp.min.js &
