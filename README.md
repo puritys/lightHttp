@@ -5,10 +5,12 @@ Travis CI status: [![Unit testing](https://travis-ci.org/puritys/lightHttp.png?b
 
 Light-http is a very light library it could easily make a http & https request, also support asynchronous and synchonrous at the same time.
 
+You can use this library on server side Node.js  and client side JavaScript.
+
 Let's try it !
 
 
-## How to install light http 
+## How to install light http on server side 
 npm install -g light-http
 
 ## Example 
@@ -80,7 +82,7 @@ http.rawRequest(host, port, msg)
 
 </pre>
 
-### Make a Raw HTTPS request
+### Make a Raw HTTPS request (ssl)
 
 You have two ways to indicate this library to use https protocol
 
@@ -114,11 +116,16 @@ HTTP Request Error Handling
 </pre>
 
 
-Using lightHttp library on browser
+Using lightHttp library on client side browser
 =================================
 
 lightHttp library also support any browser in the world to quickly and easily make a ajax, pjax, jsonp.
 
+There are two minified JavaScript files with lightHttp function  you can use.
+
+One is the "lightHttp.min.js", this file include the promise functions. The flaw of this file is it need 24 KB.
+
+Another one is the "lightHttp-simple.min.js", this file do not include the promise function so it's file size has only 5 KB.
 
 AJAX (GET)
 ----------
