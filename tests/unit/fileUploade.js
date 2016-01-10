@@ -25,7 +25,7 @@ describe("Test createMultipartData", function () {
 
 describe("Test createBoundary", function () {
 
-    it("normal", function () {
+    it("normal case", function () {
         var b = obj.createBoundary(), str;
 
         assert.equal(42, b.length);
@@ -40,5 +40,17 @@ describe("Test createBoundary", function () {
     });
 
 });
+
+describe("Test addFile", function () {
+
+    it("normal case", function () {
+        obj.clear();
+        obj.addFile("key1", "./fileUploade.js");
+        var ret = obj.uploadFiles;
+        assert.equal('key1', ret[0].field);
+    });
+
+});
+
 
 
