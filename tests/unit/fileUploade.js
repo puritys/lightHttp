@@ -45,7 +45,7 @@ describe("Test addFile", function () {
 
     it("normal case", function () {
         obj.clear();
-        obj.addFile("key1", "./fileUploade.js");
+        obj.addFile("key1", __dirname + "/fileUploade.js");
         var ret = obj.uploadFiles;
         assert.equal('key1', ret[0].field);
     });
