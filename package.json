@@ -23,6 +23,7 @@
   "author": "puritys",
   "license": "MIT",
   "dependencies": {
+    "mime": "^1.3.4",
     "q": "^1.4.1"
   },
   "devDependencies": {

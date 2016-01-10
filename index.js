@@ -1,5 +1,9 @@
-"use strict";
+/*
+ * http://www.w3.org/Protocols/rfc1341/7_2_Multipart.html
+ * 
+ * */
 
+"use strict";
 var http = require('http');
 var https = require('https');
 var net = require('net');
@@ -8,41 +12,115 @@ var fs = require('fs');
 var Q = require('q');
 var debugMode = false;
 var lib = require('./lib.js');
+var mime = require('mime'); 
 
-function disableDebugMode() {
+function lightHttp() {
+    this.uploadFiles = [];
+}
+
+var o = lightHttp.prototype;
+o.uploadFiles = [];
+o.disableDebugMode = function () 
+{
     debugMode = false;
 }
 
-function enableDebugMode() {
+o.enableDebugMode = function()
+{
     debugMode = true;
-}
+};
 
-function merge(obj1, obj2){
+o.merge = function (obj1, obj2)
+{//{{{
     var obj3 = {}, attrname;
     for (attrname in obj1) { obj3[attrname] = obj1[attrname]; }
     for (attrname in obj2) { obj3[attrname] = obj2[attrname]; }
     return obj3;
+}//}}}
+
+
+o.addFileContent = function (field, fileName, content) 
+{//{{{
+    this.isMultipart = true;
+    this.uploadFiles.push({
+        field: field,
+        fileName: fileName,
+        content: content
+
+    });
+};//}}}
+
+// clear setting
+o.clear = function () 
+{
+    this.isMultipart = false;
+    this.uploadFiles = [];
 }
 
-function get(url, param, header, callback) {//{{{
-    return request('GET', url, param, header, callback);
+o.get = function(url, param, header, callback) 
+{//{{{
+    return this.request('GET', url, param, header, callback);
 };//}}}
 
-function post(url, param, header, callback) {//{{{
-    return request('POST', url, param, header, callback);
+o.post = function (url, param, header, callback) 
+{//{{{
+    return this.request('POST', url, param, header, callback);
 };//}}}
 
-function deleteMethod(url, param, header, callback) {//{{{
-    return request('DELETE', url, param, header, callback);
+o.deleteMethod = function (url, param, header, callback) 
+{//{{{
+    return this.request('DELETE', url, param, header, callback);
 };//}}}
 
-function put(url, param, header, callback) {//{{{
-    return request('PUT', url, param, header, callback);
+o.put = function (url, param, header, callback) 
+{//{{{
+    return this.request('PUT', url, param, header, callback);
 };//}}}
 
+o.createMultipartData = function (param) 
+{//{{{
+    var payload = "", boundary, i ,n, 
+        file, mimeType, key;
+    boundary = this.createBoundary();
+    n = this.uploadFiles.length;
+    for(i = 0; i < n; i ++) {
+        file = this.uploadFiles[i];
+        mimeType = mime.lookup(file.fileName);
+        payload += "--" + boundary + "\n";
+        payload += "Content-Disposition: form-data; name=\"" +file.field+ "\"; filename=\""+file.fileName+"\"\n";
+        payload += "Content-Type: " +mimeType+"\n\n";
+        payload += file.content + "\n";
+    }
 
+    if (param) {
+        for (key in param) {
+            payload += "--" + boundary + "\n";
+            payload += "Content-Disposition: form-data; name=\"" + key + "\"\n\n";
+            payload += param[key] + "\n";
+        }
+    }
 
-function request(method, url, param, header, callback) {//{{{
+    payload += "--" + boundary + "--\n";
+    return {
+        "payload": payload,
+        "boundary": boundary
+    };
+}//}}}
+
+o.createBoundary = function () 
+{//{{{
+    var b, i, r, chars;
+    chars = "0123456789abcdefghijklmnopqrstuvwxyz";
+    b = "------------------------------";
+    for (i = 0; i < 12; i++) {
+        r = Math.floor(Math.random()*36);
+        b += chars.substr(r, 1);
+    }
+    return b;
+}//}}}
+
+o.request = function (method, url, param, header, callback) 
+{//{{{
     var len, req, options = {}, urlInfo, resp = "", fUrl = "", 
         isSync = false, defer, postData;
     if (typeof(callback) === "undefined" && 
@@ -70,16 +148,22 @@ function request(method, url, param, header, callback) {//{{{
     }
 
     if (urlInfo.param) {
-        param = merge(param, urlInfo.param);
+        param = this.merge(param, urlInfo.param);
     }
 
     if (("POST" === method ||
          "PUT" === method
         ) && 
         typeof(param) != "undefined") {
-        postData = lib.stringifyParam(param);
-        header['content-type'] = 'application/x-www-form-urlencoded';
-        header['content-length'] = postData.length; 
+        if (this.isMultipart) {
+            var b = this.createMultipartData(param);
+            header["content-type"] = "multipart/form-data; boundary=" + b['boundary'];
+            postData = b['payload'];
+        } else {
+            postData = lib.stringifyParam(param);
+            header['content-type'] = 'application/x-www-form-urlencoded';
+            header['content-length'] = postData.length; 
+        }
     } else {
         fUrl += "?" + lib.stringifyParam(param);
     }
@@ -127,12 +211,13 @@ function request(method, url, param, header, callback) {//{{{
         q.write(postData);
     }
     q.end();
-
+    this.clear();
     if (true === isSync) return defer.promise;
     return true;
 }//}}}
 
-function rawRequest(host, port, content, callback) {//{{{
+o.rawRequest = function (host, port, content, callback) 
+{//{{{
     var defer, client, response = "", isSync = false, isSSL = false, socket = net, options = {};
 
     if (typeof(callback) === "undefined") {
@@ -186,16 +271,6 @@ function rawRequest(host, port, content, callback) {//{{{
 var publicMethods = ['request'];
 var privateMethods = ['parseUrl'];
 
-exports.get = get;
-exports.post = post;
-exports.delete = deleteMethod;
-exports.put = put;
-exports.request = request;
-exports.rawRequest = rawRequest;
-exports.enableDebugMode = enableDebugMode;
-exports.disableDebugMode = disableDebugMode;
-
-//if (typeof(UNIT_TEST) != "undefined") {
-//    exports.parseUrl = parseUrl;
-//}
+var obj = new lightHttp();
+module = module.exports = obj;
 
