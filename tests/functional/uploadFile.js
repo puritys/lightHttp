@@ -3,7 +3,7 @@ var baseUrl = "http://www.puritys.me";
 //baseUrl = "http://localhost:8080/";
 var assert = require('assert');
 
-describe("Test file upload : addFileContent", function () {
+describe("Test file upload - addFileContent - ", function () {
     var resp, header;
     header = {
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85"
@@ -29,7 +29,7 @@ describe("Test file upload : addFileContent", function () {
     }); 
 });
 
-describe("Test file upload - multi request", function () {
+describe("Test file upload - multi request -", function () {
     var resp1, resp2, header, respNum = 0;
     header = {
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85"
@@ -69,7 +69,7 @@ describe("Test file upload - addFile -", function () {
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85"
     };
     before(function (done) {
-        lightHttp.addFile("fileData", "./uploadFile.js");
+        lightHttp.addFile("fileData", __dirname + "/uploadFile.js");
 
         lightHttp.post(baseUrl + "/unit.php", {"age":"13"}, header, function(response) {
             resp = JSON.parse(response);
