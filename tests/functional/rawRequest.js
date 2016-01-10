@@ -121,7 +121,6 @@ describe("Test asynchronous Raw Request: file upload", function () {
     it("normal", function () {
         var reg = /"name":"fileName.png"/i;
         var match = content.match(reg);
-console.log("content = " + content);
         assert.equal('"name":"fileName.png"', match);
     });
 });
