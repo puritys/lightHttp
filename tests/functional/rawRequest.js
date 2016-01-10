@@ -26,6 +26,7 @@ describe("Test asynchronous Raw Request", function () {//{{{
 
         assert.equal('<!doctype html>', match);
     });
+
 });//}}}
 
 describe("Test synchronous Raw Request", function () {//{{{
@@ -69,7 +70,7 @@ describe("Test asynchronous Raw Request: POST", function () {//{{{
     });
 });//}}}
 
-describe("Test asynchronous Raw Request: file upload", function () {
+describe("Test asynchronous Raw Request: file upload", function () {//{{{
     var content, postLength;
     before(function(done) {
         http.enableDebugMode();
@@ -112,5 +113,25 @@ describe("Test asynchronous Raw Request: file upload", function () {
         var match = content.match(reg);
         assert.equal('"name":"fileName.png"', match);
     });
-});
+});//}}}
+
+describe("Test asynchronous Raw SSL Request", function () {//{{{
+    var content;
+    before(function(done) {
+
+        http.enableDebugMode();
+        http.rawRequest("https://www.google.com.tw", 443, msg, function (resp) {
+            content = resp;
+            done();
+        });
+        http.disableDebugMode();
+    });
+    it("normal", function () {
+        var reg = /<\!DOCTYPE[\s]+html>/i;
+        var match = content.match(reg);
+
+        assert.equal('<!doctype html>', match);
+    });
+
+});//}}}
 
