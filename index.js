@@ -38,6 +38,18 @@ o.merge = function (obj1, obj2)
     return obj3;
 }//}}}
 
+o.addFile = function (field, filePath) 
+{//{{{
+    var fileName, content, mat;
+    if (!fs.existsSync(filePath)) {
+        return false;
+    }
+    mat = filePath.split(/[\/\\]/);
+    fileName = mat[mat.length - 1];
+    content = fs.readFileSync(filePath);
+    this.addFileContent(field, fileName, content);
+};//}}}
+
 
 o.addFileContent = function (field, fileName, content) 
 {//{{{
@@ -46,7 +58,6 @@ o.addFileContent = function (field, fileName, content)
         field: field,
         fileName: fileName,
         content: content
-
     });
 };//}}}
 

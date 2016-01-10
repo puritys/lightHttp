@@ -57,6 +57,22 @@ http.post(url, {"key":"value"}, header)
 </pre>
 
 
+### Upload file
+
+<pre>
+var http = require('light-http');
+var header = {"user-agent": "Mozilla/5.0 xx"};
+var url = "https://www.google.com.tw";
+
+http.addFile("fileData", "/var/www/file.txt");
+http.addFile("fileData2", "/var/www/file2.txt");
+http.addFileContent("fileData3", "file3.txt", "The file content");
+
+http.post(baseUrl + "/xxx.php", {"age":"13"}, header, function(response) {
+    var resp = JSON.parse(response);
+});
+
+</pre>
 
 ### Make a Raw HTTP request
 <pre>
