@@ -75,17 +75,6 @@ describe("Test asynchronous Raw Request: file upload", function () {
         http.enableDebugMode();
         var boundary = "------------------------------uppyumd8mxt2";
         host = "www.puritys.me";
-//host = "localhost";
-//port = 8080;
-//
-//        var post = [
-//            "Content-Disposition: form-data; name=\"fileData\"; filename=\"fileName.png\"",
-//            "Content-Type: image/png",
-//            "",
-//            "content",
-//        ].join("\r\n");
-//        postLength = post.length;
-//        post = "--ikvrjxlrs6gc\n" + post + "\n--ikvrjxlrs6gc--";
         var post = [
             "--" + boundary,
             "Content-Disposition: form-data; name=\"fileData\"; filename=\"fileName.png\"",
