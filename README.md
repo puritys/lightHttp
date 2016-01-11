@@ -210,9 +210,10 @@ AJAX (Upload file)
 <pre>
 &lt;html>
 &lt;script src="lightHttp.min.js"></script>
+<input type="file" id="fileInput" />
 &lt;script>
 var http = new window.lightHttp();
-http.addFile("fileData", document.getElementById("xxx").files[0]);
+http.addFile("fileData", document.getElementById("fileInput"));
 http.ajaxPost("test.php", {"count": 20}, function (content) {
     console.log(content);
 });
