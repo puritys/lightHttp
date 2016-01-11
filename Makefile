@@ -8,7 +8,7 @@ precommit:
 compress:
 	gmake killWatch
 	gmake browserify
-
+	gmake compressWithoutQ
 killWatch:
 	ps aux |grep watchify  |grep -v grep | awk '{print $$2}' | xargs -I%s -t -n 1  sudo kill -9 %s 2>&1 
 
