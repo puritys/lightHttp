@@ -57,12 +57,29 @@
             return ret;
         },//}}}
 
-        stringifyParam: function(param) {//{{{
-            var str = [];
+        stringifyParam: function(param)
+        {//{{{
+            var ret = [];
             for (var pro in param) {
-                str.push(pro + "=" + encodeURIComponent(param[pro]));
+                this.paramToString(ret, pro, param[pro]);
             }
-            return str.join('&');
+            return ret.join('&');
+        },//}}}
+        paramToString: function (ret, key, value) 
+        {//{{{
+            var i, n, k;
+            if (value instanceof Array) {
+                n = value.length;
+                for (i = 0; i < n; i++) {
+                    this.paramToString(ret, key + "["+i+"]", value[i]);
+                }
+            } else if (value instanceof Object) {
+                for (k in value) {
+                    this.paramToString(ret, key + "["+k+"]", value[k]);
+                }
+            } else {
+                ret.push(key + "=" + value);
+            }
         },//}}}
 
         addParams: function (url, params) {//{{{
