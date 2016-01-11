@@ -78,7 +78,7 @@
                     this.paramToString(ret, key + "["+k+"]", value[k]);
                 }
             } else {
-                ret.push(key + "=" + value);
+                ret.push(key + "=" + encodeURIComponent(value));
             }
         },//}}}
 
