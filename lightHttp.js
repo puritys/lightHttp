@@ -1,3 +1,4 @@
+/* globals FormData */
 /*
  *
  * */
@@ -45,7 +46,7 @@ var Q = require('q');
     o.clear = function ()
     {//{{{
         this.uploadFiles = [];
-    }//}}}
+    };//}}}
 
     o.composeFormData = function (uploadFiles, param)
     {//{{{
@@ -60,7 +61,7 @@ var Q = require('q');
             this.paramToFormData(f, key, param[key]);
         }
         return f;
-    }//}}}
+    };//}}}
 
     o.paramToFormData = function (formData, key ,value)
     {//{{{
@@ -77,7 +78,7 @@ var Q = require('q');
         } else {
             formData.append(key, value);
         }
-    }//}}}
+    };//}}}
 
     o.get = function (url, param) 
     {//{{{

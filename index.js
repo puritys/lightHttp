@@ -23,7 +23,7 @@ o.uploadFiles = [];
 o.disableDebugMode = function () 
 {
     debugMode = false;
-}
+};
 
 o.enableDebugMode = function()
 {
@@ -36,7 +36,7 @@ o.merge = function (obj1, obj2)
     for (attrname in obj1) { obj3[attrname] = obj1[attrname]; }
     for (attrname in obj2) { obj3[attrname] = obj2[attrname]; }
     return obj3;
-}//}}}
+};//}}}
 
 o.addFile = function (field, filePath) 
 {//{{{
@@ -66,7 +66,7 @@ o.clear = function ()
 {
     this.isMultipart = false;
     this.uploadFiles = [];
-}
+};
 
 o.get = function(url, param, header, callback) 
 {//{{{
@@ -116,7 +116,7 @@ o.createMultipartData = function (param)
         "payload": payload,
         "boundary": boundary
     };
-}//}}}
+};//}}}
 
 o.createBoundary = function () 
 {//{{{
@@ -128,7 +128,7 @@ o.createBoundary = function ()
         b += chars.substr(r, 1);
     }
     return b;
-}//}}}
+};//}}}
 
 o.request = function (method, url, param, header, callback) 
 {//{{{
@@ -225,7 +225,7 @@ o.request = function (method, url, param, header, callback)
     this.clear();
     if (true === isSync) return defer.promise;
     return true;
-}//}}}
+};//}}}
 
 o.rawRequest = function (host, port, content, callback) 
 {//{{{
@@ -277,7 +277,7 @@ o.rawRequest = function (host, port, content, callback)
 
     if (true === isSync) return defer.promise;
 
-}//}}}
+};//}}}
 
 var publicMethods = ['request'];
 var privateMethods = ['parseUrl'];
