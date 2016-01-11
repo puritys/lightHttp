@@ -1,22 +1,5 @@
 /*
  *
-var formData = new FormData();
-
-formData.append("username", "Groucho");
-formData.append("accountnum", 123456); // number 123456 is immediately converted to a string "123456"
-
-// HTML file input, chosen by user
-formData.append("userfile", fileInputElement.files[0]);
-
-// JavaScript file-like object
-var content = '<a id="a"><b id="b">hey!</b></a>'; // the body of the new file...
-var blob = new Blob([content], { type: "text/xml"});
-
-formData.append("webmasterfile", blob);
-
-var request = new XMLHttpRequest();
-request.open("POST", "http://foo.com/submitform.php");
-request.send(formData);
  * */
 "use strict";
 Function.prototype.bind=Function.prototype.bind||function(b){if(typeof this!=="function"){throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");}var a=Array.prototype.slice,f=a.call(arguments,1),e=this,c=function(){},d=function(){return e.apply(this instanceof c?this:b||window,f.concat(a.call(arguments)));};c.prototype=this.prototype;d.prototype=new c();return d;};
@@ -42,10 +25,62 @@ var Q = require('q');
         this.lightHttpLib = lib; //window.lightHttpLib;
         this.timeout = 15000; //15 seconds
         this.jsonpCallbackList = {};
+        this.uploadFiles = [];
     }//}}}
-    var o = lightHttp.prototype;
 
-    o.get = function (url, param) {//{{{
+    var o = lightHttp.prototype;
+    o.uploadFiles = [];
+
+    o.addFile = function (field, input) 
+    {//{{{
+        if (!input) {
+            return false;
+        }
+        this.uploadFiles.push({
+            field: field,
+            input: input
+        });
+    };//}}}
+
+    o.clear = function ()
+    {//{{{
+        this.uploadFiles = [];
+    }//}}}
+
+    o.composeFormData = function (uploadFiles, param)
+    {//{{{
+        var f, i ,n, it, key;
+        f = new FormData();
+        n = uploadFiles.length;
+        for (i = 0; i < n; i++) {
+            it = uploadFiles[i];
+            f.append(it.field, it.input.files[0]);
+        }
+        for (key in param) {
+            this.paramToFormData(f, key, param[key]);
+        }
+        return f;
+    }//}}}
+
+    o.paramToFormData = function (formData, key ,value)
+    {//{{{
+        var i ,n, k;
+        if (value instanceof Array) {
+            n = value.length;
+            for (i = 0; i < n; i++) {
+                this.paramToFormData(formData, key + "["+i+"]", value[i]);
+            }
+        } else if (value instanceof Object) {
+            for (k in value) {
+                this.paramToFormData(formData, key+"["+k+"]", value[k]);
+            }
+        } else {
+            formData.append(key, value);
+        }
+    }//}}}
+
+    o.get = function (url, param) 
+    {//{{{
         url = this.lightHttpLib.addParams(url, param);
         window.location.href = url;
     };//}}}
@@ -73,25 +108,29 @@ var Q = require('q');
      * @param object header
      * @param function callback
      */
-    o.ajax = function () {//{{{
+    o.ajax = function ()
+    {//{{{
         var args = ["ajax", "GET"];
         for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
         return this.request.apply(this, args);
     };//}}}
 
-    o.ajaxpost = o.ajaxPost = function () {//{{{
+    o.ajaxpost = o.ajaxPost = function ()
+    {//{{{
         var args = ["ajaxPost", "POST"];
         for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
         return this.request.apply(this, args);
     };//}}}
 
-    o.pajax = function () {//{{{
+    o.pajax = function () 
+    {//{{{
         var args = ["pjax", "GET"];
         for (var i = 0, len = arguments.length; i< len; i++) args.push(arguments[i]);
         return this.request.apply(this, args);
     };//}}}
 
-    o.jsonp = function (url, param, header, callback) {//{{{
+    o.jsonp = function (url, param, header, callback)
+    {//{{{
         var script, jsonpCallback, self;
         if (!param) param = {};
         this.cleanJsonpCallback();
@@ -112,11 +151,13 @@ var Q = require('q');
     };//}}}
 
     /*
-     * type, url, param, header, callback
+     * name, type, url, param, header, callback
     */
-    o.request = function () {//{{{
+    o.request = function () 
+    {//{{{
         var type = "GET", xhr, url, param, header, name,
-            callback, postData = "", async = true, defer, isPromise = false,
+            callback, postData = "", async = true, 
+            defer, isPromise = false, formData,
             options = {}, args = {};
         var respHandler, timeoutHandler;
         if (!arguments) return "";
@@ -167,11 +208,19 @@ var Q = require('q');
         xhr.onreadystatechange = respHandler;
 
 
-        postData = this.lightHttpLib.stringifyParam(param);
+        if (this.uploadFiles.length > 0) {
+            formData = this.composeFormData(this.uploadFiles, param);
+        } else {
+            postData = this.lightHttpLib.stringifyParam(param);
+        }
         if (type === "POST") {
             xhr.open(type, url, async);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.send(postData);
+            if (formData) {
+                xhr.send(formData);
+            } else {
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send(postData);
+            }
         } else {
             if (url.match(/\?/)) {
                 url += "&" + postData;
@@ -181,12 +230,14 @@ var Q = require('q');
             xhr.open(type, url, async);
             xhr.send();
         }
+        this.clear();
         if (true === isPromise) {
             return defer.promise;
         }
     };//}}}
 
-    o.instantiateRequest = function () {//{{{
+    o.instantiateRequest = function ()
+    {//{{{
         var xhr;
         if (window.XMLHttpRequest) {
            xhr = new XMLHttpRequest();
@@ -205,7 +256,8 @@ var Q = require('q');
         return xhr;
     };//}}}
 
-    o.responseHandler = function(args) {//{{{
+    o.responseHandler = function(args)
+    {//{{{
         var resp = "", respInfo = {}, xhr;
         xhr = args.xhr;
         //xhr.getResponseHeader("Connection")
@@ -221,7 +273,8 @@ var Q = require('q');
         }
     };//}}}
 
-    o.timeoutHandler = function (args) {//{{{
+    o.timeoutHandler = function (args)
+    {//{{{
         //var respInfo = {};
         //console.log("timeout");
         //args.isTimeout = true;
@@ -230,14 +283,16 @@ var Q = require('q');
         //if (args.callback) args.callback("", respInfo);
     };//}}}
 
-    o.jsonpHander = function () {
+    o.jsonpHander = function () 
+    {
 
     };
 
     /**
      * remove jsonp callback function from window to prevent memory leak.
      */
-    o.cleanJsonpCallback = function () {
+    o.cleanJsonpCallback = function ()
+    {//{{{
         var func;
         for (func in this.jsonpCallbackList) {
             if (this.jsonpCallbackList[func] === 1) {
@@ -247,7 +302,7 @@ var Q = require('q');
                 } catch (e) {}
             }
         }
-    };
+    };//}}}
 
     window.lightHttp = lightHttp;
 }());
