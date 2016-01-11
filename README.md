@@ -204,5 +204,21 @@ http.jsonp("testJsonp.php", {"test":1}, function (resp) {
 &lt;/html>
 </pre>
 
+AJAX (Upload file)
+----------
+
+<pre>
+&lt;html>
+&lt;script src="lightHttp.min.js"></script>
+&lt;script>
+var http = new window.lightHttp();
+http.addFile("fileData", document.getElementById("xxx").files[0]);
+http.ajaxPost("test.php", {"count": 20}, function (content) {
+    console.log(content);
+});
+&lt;/script>
+&lt;/html>
+</pre>
+
 
 http://puritys.github.io/lightHttp/
