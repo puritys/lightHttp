@@ -4,87 +4,8 @@
     <title>Light HTTP</title>
     <meta http-equiv="content-language" content="zh-tw"/>
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <meta http-equiv="refresh" content="0;URL='dest/tw/index.html'">
 </head>
 <body>
-<div class="container bs-docs-container">
-    <center><h1>Light HTTP</h1></center>
-    <ul class="nav nav-tabs yui3-u-1">
-        <li class="active"><a href="index.html">Node.js</a></li>
-        <li ><a href="browser.html">Browser</a></li>
-        <li ><a href="https://github.com/puritys/lightHttp" target="_blank">Source</a></li>
-    </ul>
-
-
-    <br />
-    <h2>What is the Light HTTP?</h2>
-    <p>Light-HTTP is a very light library. the purpose of this package is to easily make a http & https request, it also support asynchronous and synchonrous(promise) request at the same time. You can use this library on Node.js environment and any version of Browser such as IE8 ~, Chrome, Firefox. </p>
-
-
-    <h2>Install the Light HTTP.</h2>
-    <p>The following example will show you how to use light-http on Node.js environment.</p>
-    <pre>npm install light-http</pre>
-
-    <h2>Asynchronous HTTP Request.</h2>
-    <pre>
-        var http = require('light-http');
-        var header = {"user-agent": "Mozilla/5.0 xx"};
-        var url = "https://www.google.com.tw";
-
-        // Method GET
-        http.get(url, {"key":"value"}, header, function(response) {
-            xxx
-        });
-
-        // Method POST
-        http.post(url, {"key":"value"}, header, function(response) {
-            xxx
-        });
-    </pre>
-
-
-    <h2>Synchronous - Using Promise</h2>
-    <pre>
-        var http = require('light-http');
-        var header = {"user-agent": "Mozilla/5.0 xx"};
-        var url = "https://www.google.com.tw";
-
-        // Method GET
-        http.get(url, {"key":"value"}, header)
-            .then(function(response) {
-                xxx
-            });
-
-        // Method POST
-        http.post(url, {"key":"value"}, header)
-            .then(function(response) {
-                xxx
-            });
-    </pre>
-
-    <h1>How to make a raw HTTP request?</h1>
-    <pre>
-        var http = require('light-http');
-        var host = "www.google.com.tw";
-        var port = 80;
-        var path = "/";
-        var cookie = 'SID=; HSID=; SSID=jjj; APISID=;';
-        var msg = [
-        "GET " + path + " HTTP/1.1",
-        "host: " + host,
-        "cookie: " + cookie,
-        "\r\n"].join("\r\n");
-
-        http.rawRequest(host, port, msg)
-            .then(function (resp) {
-                console.log(resp);
-            });
-    </pre>
-
-    <h1>How to pass the unauthorized ssl verification</h1>
-    <pre>
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    </pre>
-    <br /><br />
-</div>
 </body>
 </html>

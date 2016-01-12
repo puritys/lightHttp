@@ -1,0 +1,28 @@
+    <h1>AJAX (GET)</h1>
+
+    <pre>
+        &lt;html>
+        &lt;script src="lightHttp.min.js"></script>
+        &lt;script>
+        var http = new window.lightHttp();
+        http.ajax("test.html", {"count": 20}, function (content) {
+            console.log(content);
+        });
+        &lt;/script>
+        &lt;/html>
+    </pre>
+
+
+    <h1>AJAX (GET) Promise</h1>
+    <pre>
+        &lt;html>
+        &lt;script src="lightHttp.min.js">
+        &lt;script>
+        var http = new window.lightHttp();
+        http.ajax("test.html", {"count": 20})
+            .then(function (content) {
+                console.log(content);
+            });
+        &lt;/script>
+        </html>
+    </pre>

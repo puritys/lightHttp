@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Light HTTP</title>
+    <meta http-equiv="content-language" content="zh-tw"/>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/lightHttp/dest/css/default.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="container bs-docs-container">
+    <center><h1>Light HTTP</h1></center>
+<ul class="nav nav-tabs">
+        <li class="active"><a href="index.html" >Node.js</a></li>
+        <li ><a href="browser.html" >JavaScript (瀏覽器)</a></li>
+        <li ><a href="https://github.com/puritys/lightHttp" target="_blank">原始碼</a></li>
+        <li ><a href="../en/index.html" >English Version</a></li>
+</ul>
+
+
+    
+<p>    Light-http 是一個輕量級的Library ，讓你可以用很簡單、快速的方式建立一個 HTTP/HTTPS 的 Request，而且還同時支援同步與異步請求，同步的功能是使用 Promise Pattern ，透過 Promise 可以讓程式更容易維護。
+</p> <p>    不只是 Node.js (io.js) 可以使用 light-http ，light-Http 也支援一般常用的瀏覽器，例如 IE8 ~ , Chrome, Firefox。
+</p>
+
+
+<h2>Install the Light HTTP.</h2>
+<p>下面這個指令 ，是使用 NPM 來安裝 light-http</p>
+
+<pre>npm install light-http</pre>
+
+<h2>Asynchronous HTTP Request.</h2>
+<pre>
+    var http = require('light-http');
+    var header = {"user-agent": "Mozilla/5.0 xx"};
+    var url = "https://www.google.com.tw";
+
+    // Method GET
+    http.get(url, {"key":"value"}, header, function(response) {
+        xxx
+    });
+
+    // Method POST
+    http.post(url, {"key":"value"}, header, function(response) {
+        xxx
+    });
+</pre>
+
+
+
+
+<h2>Synchronous - Using Promise</h2>
+<pre>
+    var http = require('light-http');
+    var header = {"user-agent": "Mozilla/5.0 xx"};
+    var url = "https://www.google.com.tw";
+
+    // Method GET
+    http.get(url, {"key":"value"}, header)
+        .then(function(response) {
+            xxx
+        });
+
+    // Method POST
+    http.post(url, {"key":"value"}, header)
+        .then(function(response) {
+            xxx
+        });
+</pre>
+
+<h1>How to make a raw HTTP request?</h1>
+<pre>
+    var http = require('light-http');
+    var host = "www.google.com.tw";
+    var port = 80;
+    var path = "/";
+    var cookie = 'SID=; HSID=; SSID=jjj; APISID=;';
+    var msg = [
+    "GET " + path + " HTTP/1.1",
+    "host: " + host,
+    "cookie: " + cookie,
+    "\r\n"].join("\r\n");
+
+    http.rawRequest(host, port, msg)
+        .then(function (resp) {
+            console.log(resp);
+        });
+</pre>
+
+
+</div>
+</body>
+</html>
+

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Light HTTP</title>
+    <meta http-equiv="content-language" content="zh-tw"/>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/lightHttp/dest/css/default.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="container bs-docs-container">
+    <center><h1>Light HTTP</h1></center>
+<ul class="nav nav-tabs">
+        <li ><a href="index.html" >Node.js</a></li>
+        <li class="active"><a href="browser.html" >JavaScript (瀏覽器)</a></li>
+        <li ><a href="https://github.com/puritys/lightHttp" target="_blank">原始碼</a></li>
+        <li ><a href="../en/index.html" >English Version</a></li>
+</ul>
+
+
+        <h1>AJAX (GET)</h1>
+
+    <pre>
+        &lt;html>
+        &lt;script src="lightHttp.min.js"></script>
+        &lt;script>
+        var http = new window.lightHttp();
+        http.ajax("test.html", {"count": 20}, function (content) {
+            console.log(content);
+        });
+        &lt;/script>
+        &lt;/html>
+    </pre>
+
+
+    <h1>AJAX (GET) Promise</h1>
+    <pre>
+        &lt;html>
+        &lt;script src="lightHttp.min.js">
+        &lt;script>
+        var http = new window.lightHttp();
+        http.ajax("test.html", {"count": 20})
+            .then(function (content) {
+                console.log(content);
+            });
+        &lt;/script>
+        </html>
+    </pre>
+
+</div>
+</body>
+</html>
+

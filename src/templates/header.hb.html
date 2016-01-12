@@ -1,0 +1,7 @@
+<center><h1>Light HTTP</h1></center>
+<ul class="nav nav-tabs">
+    {{#each menu.list}}
+        <li {{#if isActive}}class="active"{{/if}}><a href="{{link}}" {{#if target}}target="{{target}}"{{/if}}>{{name}}</a></li>
+    {{/each}}
+</ul>
+

@@ -1,0 +1,30 @@
+lang: zh-tw
+menu:
+  list:
+    1 :
+      name: Node.js
+      link: index.html
+      isActive: true
+    2 :
+      name: JavaScript (瀏覽器)
+      link: browser.html
+      isActive: false
+    3 :
+      name: 原始碼
+      link: https://github.com/puritys/lightHttp
+      isActive: false
+      target: _blank
+    4 :
+      name: English Version
+      link: ../en/index.html
+
+main:
+  whatIsIt: >
+    <p>
+        Light-http 是一個輕量級的Library ，讓你可以用很簡單、快速的方式建立一個 HTTP/HTTPS 的 Request，而且還同時支援同步與異步請求，同步的功能是使用 Promise Pattern ，透過 Promise 可以讓程式更容易維護。
+    </p>
+    <p>
+        不只是 Node.js (io.js) 可以使用 light-http ，light-Http 也支援一般常用的瀏覽器，例如 IE8 ~ , Chrome, Firefox。
+    </p>
+  description: > 
+    <p>下面這個指令 ，是使用 NPM 來安裝 light-http</p>
