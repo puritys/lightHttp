@@ -159,7 +159,11 @@ o.request = function (method, url, param, header, callback)
     }
 
     if (urlInfo.param) {
-        param = this.merge(param, urlInfo.param);
+        if (param instanceof Object) {
+            param = this.merge(param, urlInfo.param);
+        } else {
+            param += '&' + lib.stringifyParam(urlInfo.param);
+        }
     }
 
     if (("POST" === method ||

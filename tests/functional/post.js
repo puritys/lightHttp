@@ -50,7 +50,7 @@ describe("Test HTTP POST Promise", function () {
 describe("Test HTTP POST a raw string", function () {
     var resp;
     before(function (done) {
-        lightHttp.post(baseUrl + "/unit.php", 'a[0]=b&a[1]=c')
+        lightHttp.post(baseUrl + "/unit.php?z=p&c=1&c=2", 'a[0]=b&a[1]=c')
             .then(function (response) {
                 resp = response;
                 done();
@@ -60,7 +60,12 @@ describe("Test HTTP POST a raw string", function () {
     it("post a JSON string", function () {
         var data;
         data = JSON.parse(resp);
+        //console.log(data);
         assert.equal('[\"b\",\"c\"]', data.a);
+        assert.equal('p', data.z);
+        assert.equal('["1","2"]', data.c);
+
+
 
     });
 
