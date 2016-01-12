@@ -89,10 +89,15 @@ function g() {
 function uploadFile() {
     var obj = new window.lightHttp();
     obj.addFile("fileData", document.querySelector('#fileData'));
-    obj.ajaxpost("testFile.php", {"key": "value", "ay": [1,2,3], "obj": {"a":"b"}}, {}, function (resp) {
+//    obj.ajaxpost("testFile.php", {"key": "value", "ay": [1,2,3], "obj": {"a":"b"}}, {}, function (resp) {
+//        console.log("testFile result:");
+//        console.log(resp);
+//    });
+    obj.ajaxpost("testFile.php", {"key": "value", "ay": [1,2,3], "obj": {"a":"b"}}, function (resp) {
         console.log("testFile result:");
         console.log(resp);
     });
+
 }
 
 </script>
