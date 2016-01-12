@@ -1,5 +1,6 @@
 var lightHttp = require('./../../index.js');
 var baseUrl = "http://www.puritys.me";
+//baseUrl = "http://localhost:8080/";
 var assert = require('assert');
 
 describe("Test HTTP POST", function () {
@@ -43,6 +44,25 @@ describe("Test HTTP POST Promise", function () {
             });
     });
 
+
+});
+
+describe("Test HTTP POST a raw string", function () {
+    var resp;
+    before(function (done) {
+        lightHttp.post(baseUrl + "/unit.php", 'a[0]=b&a[1]=c')
+            .then(function (response) {
+                resp = response;
+                done();
+            });
+    }); 
+
+    it("post a JSON string", function () {
+        var data;
+        data = JSON.parse(resp);
+        assert.equal('[\"b\",\"c\"]', data.a);
+
+    });
 
 });
 

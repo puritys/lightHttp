@@ -171,7 +171,11 @@ o.request = function (method, url, param, header, callback)
             header["content-type"] = "multipart/form-data; boundary=" + b['boundary'];
             postData = b['payload'];
         } else {
-            postData = lib.stringifyParam(param);
+            if (param instanceof Array || param instanceof Object) {
+                postData = lib.stringifyParam(param);
+            } else {
+                postData = param;
+            }
             header['content-type'] = 'application/x-www-form-urlencoded';
             header['content-length'] = postData.length; 
         }
