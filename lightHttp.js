@@ -86,7 +86,8 @@ var Q = require('q');
         window.location.href = url;
     };//}}}
 
-    o.post = function (url, param) {//{{{
+    o.post = function (url, param)
+    {//{{{
         var form, key, input;
         form = document.createElement('form');
         form.action = url;
@@ -206,6 +207,7 @@ var Q = require('q');
             }
             xhr.ontimeout = timeoutHandler;
         }
+
         xhr.onreadystatechange = respHandler;
 
 
@@ -223,10 +225,12 @@ var Q = require('q');
                 xhr.send(postData);
             }
         } else {
-            if (url.match(/\?/)) {
-                url += "&" + postData;
-            } else {
-                url += "?" + postData;
+            if (postData) {
+                if (url.match(/\?/)) {
+                    url += "&" + postData;
+                } else {
+                    url += "?" + postData;
+                }
             }
             xhr.open(type, url, async);
             xhr.send();
