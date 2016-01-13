@@ -17,10 +17,11 @@
 </ul>
 
 
-        <h1>AJAX (GET)</h1>
+    <p>Light-http 同時也支援 web 開發，不管是 Ajax, Ajax(Post), Pjax, Jsonp ，light-http 全部都能使用。</p> <p>你可以下載<a href="https://raw.githubusercontent.com/puritys/lightHttp/master/lightHttp.min.js" target="_blank">這個檔案: lightHttp.min.js</a>，它合併了 Promise Library ，能夠兼容舊版的瀏覽器。</p> <p>或是你可以下載<a href="https://raw.githubusercontent.com/puritys/lightHttp/master/lightHttp-simple.min.js" target="_blank">這個檔案: lightHttp-simple.min.js</a>，這個版本沒有Promise 功能，但是檔案大小只有 5k</p> <br /><br /><p>這裡提供一些簡單的 light-http 使用範例.</p>
+
+    <h1>AJAX (GET)</h1>
 
     <pre>
-        &lt;html>
         &lt;script src="lightHttp.min.js"></script>
         &lt;script>
         var http = new window.lightHttp();
@@ -28,13 +29,11 @@
             console.log(content);
         });
         &lt;/script>
-        &lt;/html>
     </pre>
 
 
     <h1>AJAX (GET) Promise</h1>
     <pre>
-        &lt;html>
         &lt;script src="lightHttp.min.js">
         &lt;script>
         var http = new window.lightHttp();
@@ -43,7 +42,17 @@
                 console.log(content);
             });
         &lt;/script>
-        </html>
+    </pre>
+
+    <h1>JSONP Promise</h1>
+    <pre>
+        &lt;script src="lightHttp.min.js">
+        &lt;script>
+        var http = new window.lightHttp();
+        http.jsonp("testJsonp.php", {"test":1}, function (resp) {
+            console.log(resp);
+        });
+        &lt;/script>
     </pre>
 
 </div>

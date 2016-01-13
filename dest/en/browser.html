@@ -17,10 +17,10 @@
 </ul>
 
 
-        <h1>AJAX (GET)</h1>
+    
+    <h1>AJAX (GET)</h1>
 
     <pre>
-        &lt;html>
         &lt;script src="lightHttp.min.js"></script>
         &lt;script>
         var http = new window.lightHttp();
@@ -28,13 +28,11 @@
             console.log(content);
         });
         &lt;/script>
-        &lt;/html>
     </pre>
 
 
     <h1>AJAX (GET) Promise</h1>
     <pre>
-        &lt;html>
         &lt;script src="lightHttp.min.js">
         &lt;script>
         var http = new window.lightHttp();
@@ -43,7 +41,17 @@
                 console.log(content);
             });
         &lt;/script>
-        </html>
+    </pre>
+
+    <h1>JSONP Promise</h1>
+    <pre>
+        &lt;script src="lightHttp.min.js">
+        &lt;script>
+        var http = new window.lightHttp();
+        http.jsonp("testJsonp.php", {"test":1}, function (resp) {
+            console.log(resp);
+        });
+        &lt;/script>
     </pre>
 
 </div>

@@ -23,4 +23,7 @@ main:
     <p>Light-HTTP is a very light library. the purpose of this package is to easily make a http & https request, it also support asynchronous and synchonrous(promise) request at the same time. You can use this library on Node.js environment and any version of Browser such as IE8 ~, Chrome, Firefox. </p>
 
   description: > 
+    <h2>Install the Light HTTP.</h2>
     <p>The following example will show you how to use light-http on Node.js environment.</p>
+  exampleDesc: >
+    <p>There are some examples here.</p>
