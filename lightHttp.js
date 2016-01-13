@@ -218,6 +218,7 @@ var Q = require('q');
         }
         if (type === "POST") {
             xhr.open(type, url, async);
+            this.setHeaders(xhr, header);
             if (formData) {
                 xhr.send(formData);
             } else {
@@ -233,6 +234,7 @@ var Q = require('q');
                 }
             }
             xhr.open(type, url, async);
+            this.setHeaders(xhr, header);
             xhr.send();
         }
         this.clear();
@@ -276,6 +278,14 @@ var Q = require('q');
                 args.callback(resp, respInfo);
             }
         }
+    };//}}}
+
+    o.setHeaders = function (xhr, headers)
+    {//{{{
+        for (var key in headers) {
+            xhr.setRequestHeader(key, headers[key]);
+        }
+
     };//}}}
 
     o.timeoutHandler = function (args)
