@@ -1,6 +1,13 @@
 
 [[light-http NPM] (https://www.npmjs.com/package/light-http)]
 
+English Document:
+http://puritys.github.io/lightHttp/
+
+中文文件
+http://puritys.github.io/lightHttp/dest/tw/index.html
+
+
 Travis CI status: [![Unit testing](https://travis-ci.org/puritys/lightHttp.png?branch=master)](https://travis-ci.org/puritys/lightHttp) [![Coverage Status](https://coveralls.io/repos/puritys/lightHttp/badge.png?branch=master)](https://coveralls.io/r/puritys/lightHttp?branch=master)
 
 Light-http is a very light library it could easily make a http & https request, also support asynchronous and synchonrous at the same time.
@@ -222,4 +229,3 @@ http.ajaxPost("test.php", {"count": 20}, function (content) {
 </pre>
 
 
-http://puritys.github.io/lightHttp/
