@@ -34,7 +34,7 @@ function go (){
 var obj = new window.lightHttp();
 
 /******* Promise   *********/
-obj.ajax("testGet", {"test":1},{})
+obj.ajax("testGet", {"test":1},{"appendHeader":"value"})
     .then(function (content) {
         console.log("[Promise Ajax GET] Run callback: content = ");
         console.log(content);
