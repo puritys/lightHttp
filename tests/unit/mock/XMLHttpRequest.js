@@ -3,7 +3,9 @@ function XMLHttpRequest()
 {
     this.responseText = "";
     this.readyState = 0;
-    this.options = {};
+    this.options = {
+        "headers": {}
+    };
 }
 
 var o = XMLHttpRequest.prototype;
@@ -19,9 +21,14 @@ o.open = function (type, url)
     this.options.url = url;
 }
 
+o.setRequestHeader = function(key, value)
+{
+    this.options.headers[key] = value;
+}
+
 o.send = function (data)
 {
-    this.postData = data;
+    this.options.postData = data;
     this.readyState = 4;
     this.responseText = this.options;
     this.onreadystatechange();
