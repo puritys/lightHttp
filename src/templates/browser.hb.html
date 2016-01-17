@@ -34,3 +34,14 @@
         });
         &lt;/script>
     </pre>
+
+    <h1>PJAX Promise</h1>
+    <pre>
+        &lt;script src="lightHttp.min.js">
+        &lt;script>
+        var http = new window.lightHttp();
+        http.pjax("test.php", {"test":1}, function (resp) {
+            console.log(resp);
+        });
+        &lt;/script>
+    </pre>

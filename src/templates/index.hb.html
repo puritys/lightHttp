@@ -31,6 +31,21 @@
         });
 </pre>
 
+<h2>File Upload</h2>
+<pre>
+    var http = require('light-http');
+    var header = {"user-agent": "Mozilla/5.0 xx"};
+    var url = "https://www.google.com.tw";
+
+    http.addFile("fileData", "/www/var/file.txt");
+    http.addFileContent("fileData", "file.txt", "content");
+
+    http.post(url, {"key":"value"}, header)
+        .then(function(response) {
+            xxx
+        });
+</pre>
+
 <h1>How to make a raw HTTP request?</h1>
 <pre>
     var http = require('light-http');

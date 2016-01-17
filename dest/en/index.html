@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Light HTTP</title>
+    <meta charset="UTF-8">
     <meta http-equiv="content-language" content="en"/>
+    <title>Light HTTP</title>
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="/lightHttp/dest/css/default.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -63,6 +64,21 @@
         });
 
     // Method POST
+    http.post(url, {"key":"value"}, header)
+        .then(function(response) {
+            xxx
+        });
+</pre>
+
+<h2>File Upload</h2>
+<pre>
+    var http = require('light-http');
+    var header = {"user-agent": "Mozilla/5.0 xx"};
+    var url = "https://www.google.com.tw";
+
+    http.addFile("fileData", "/www/var/file.txt");
+    http.addFileContent("fileData", "file.txt", "content");
+
     http.post(url, {"key":"value"}, header)
         .then(function(response) {
             xxx

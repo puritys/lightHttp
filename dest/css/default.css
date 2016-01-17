@@ -1,3 +1,15 @@
 .nav-tabs {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+}
+.lead {
+  border-bottom: 15px;
+}
+.lead:after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 30px;
+  border-bottom: 1px solid #efefef;
 }
