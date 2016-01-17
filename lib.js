@@ -65,6 +65,7 @@
             }
             return ret.join('&');
         },//}}}
+
         paramToString: function (ret, key, value) 
         {//{{{
             var i, n, k;
@@ -82,8 +83,13 @@
             }
         },//}}}
 
-        addParams: function (url, params) {//{{{
+        addParams: function (url, params) 
+        {//{{{
             var paramStr;
+            if (!url) return "";
+            if (url.indexOf('#') != -1) {
+                url = url.replace(/\#.*/, '');
+            }
             paramStr = this.stringifyParam(params);
             if (!paramStr) return url;
             if (url.match(/\?/)) {

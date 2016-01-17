@@ -16,6 +16,12 @@ describe("Test Browser Get", function () {//{{{
         assert.equal("test", window.location.href);
     });
 
+    it("Url with hash tag", function () {
+        obj.get("test#index", {"a":"b"});
+        assert.equal("test?a=b", window.location.href);
+    });
+
+
     it("simple parameters", function () {
         obj.get("test", {"age":13, "name": "Joe"});
         assert.equal("test?age=13&name=Joe", window.location.href);
@@ -26,10 +32,31 @@ describe("Test Browser Get", function () {//{{{
         assert.equal("test?age=13&name=Joe%20Johnson", window.location.href);
     });
 
-    it("include space at url paramater", function () {
+    it("include space at url paramater(Not handle)", function () {
         obj.get("test?name=Joe Johnson", {"age":13});
-        //assert.equal("test?name=Joe%20Johnson&age=13", window.location.href);
+        assert.equal("test?name=Joe Johnson&age=13", window.location.href);
     });
+
+    it("Set array into parameter", function () {
+        obj.get("test", {"a":[1,2,3]});
+        assert.equal("test?a[0]=1&a[1]=2&a[2]=3", window.location.href);
+    });
+
+    it("Set object into parameter", function () {
+        obj.get("test", {"a": {"b":"c"}});
+        assert.equal("test?a[b]=c", window.location.href);
+    });
+
+    it("Set boolean into parameter", function () {
+        obj.get("test", {"a": true});
+        assert.equal("test?a=true", window.location.href);
+    });
+
+    it("Set complicate data into parameter", function () {
+        obj.get("test", {"a": ["b", {"c":"d"}]});
+        assert.equal("test?a[0]=b&a[1][c]=d", window.location.href);
+    });
+
 });//}}}
 
 describe("Test composeFormData", function () {//{{{
@@ -88,7 +115,7 @@ describe("Test request", function () {//{{{
 
 });//}}}
 
-describe("Test GET request with query string", function () {//{{{
+describe("Test ajax request with query string", function () {//{{{
     var resp1;
     before(function (done) {
         var name, type, url, param, ret, header;
@@ -175,6 +202,39 @@ describe("Test post request", function () {//{{{
     });
 
 });//}}}
+
+describe("Test jsonp request", function () {//{{{
+    it("With Callback function", function () {
+        var url, param, header, ret;
+        url = "http://localhost/";
+        param = {"a":"b"};
+        obj.jsonp(url, param, header, function (resp) {
+            return resp;
+        });
+        for (var key in obj.jsonpCallbackList) break;
+        if (!key.match(/jsonp/)) {
+            assert.equal(true, false, 'The jsonp miss jsonpCallbackList');
+        } else {
+            assert.equal(true, true);
+        }
+    });
+
+    it("Without the header parameter", function () {
+        var url, param, header, ret;
+        url = "http://localhost/";
+        obj.jsonp(url, param, function (resp) {
+            return resp;
+        });
+        for (var key in obj.jsonpCallbackList) break;
+        if (!key.match(/jsonp/)) {
+            assert.equal(true, false, 'The jsonp miss jsonpCallbackList');
+        } else {
+            assert.equal(true, true);
+        }
+    });
+
+});//}}}
+
 
 describe("Test addFile", function () {//{{{
     it("Normal case", function () {
