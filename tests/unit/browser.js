@@ -3,11 +3,13 @@ var assert = require('assert');
 require('./mock/window.js');
 require('./mock/formData.js');
 require('./mock/XMLHttpRequest.js');
+require('./mock/document.js');
+
 var lib = require('./../../lib.js');
 var lightHttp = require('./../../lightHttp.js');
 var obj = new window.lightHttp();
 
-describe("Test Browser Get", function () {
+describe("Test Browser Get", function () {//{{{
 
     it("without parameters", function () {
         obj.get("test");
@@ -28,9 +30,9 @@ describe("Test Browser Get", function () {
         obj.get("test?name=Joe Johnson", {"age":13});
         //assert.equal("test?name=Joe%20Johnson&age=13", window.location.href);
     });
-});
+});//}}}
 
-describe("Test composeFormData", function () {
+describe("Test composeFormData", function () {//{{{
 
     it("Normal Case", function () {
         var inputFiles, param;
@@ -40,18 +42,20 @@ describe("Test composeFormData", function () {
         }];
         param = {
             "a": "b",
-            "obj": {"a": "b"}
+            "obj": {"a": "b"},
+            "ay": [1,2,3]
         };
         var ret = obj.composeFormData(inputFiles, param);
         console.log(ret);
         assert.equal("fileData", ret.files[0].field);
         assert.equal("a", ret.files[1].field);
         assert.equal("obj[a]", ret.files[2].field);
+        assert.equal("ay[0]", ret.files[3].field);
     });
 
-});
+});//}}}
 
-describe("Test request", function () {
+describe("Test request", function () {//{{{
     var resp1;
     before(function (done) {
         var name, type, url, param, ret;
@@ -82,9 +86,9 @@ describe("Test request", function () {
 
 
 
-});
+});//}}}
 
-describe("Test GET request with query string", function () {
+describe("Test GET request with query string", function () {//{{{
     var resp1;
     before(function (done) {
         var name, type, url, param, ret, header;
@@ -102,9 +106,9 @@ describe("Test GET request with query string", function () {
 
     });
 
-});
+});//}}}
 
-describe("Test POST request with query string", function () {
+describe("Test ajaxPOST request with query string", function () {//{{{
     var resp1;
     before(function (done) {
         var name, type, url, param, ret, header;
@@ -123,5 +127,68 @@ describe("Test POST request with query string", function () {
         assert.equal("zz=1&a[0]=1&a[1]=2&a[2]=3&obj[z]=z", resp1.postData);
     });
 
-});
+});//}}}
+
+describe("Test post request", function () {//{{{
+    it("Normal query string", function () {
+        var url, param, ret;
+        url = "http://localhost/";
+        param = {"a":"b"};
+        ret = obj.post(url, param);
+        assert.equal("form", ret.tagName);
+        assert.equal("http://localhost/", ret.action);
+        assert.equal("a", ret.child[0].name);
+        assert.equal("b", ret.child[0].value);
+    });
+
+    it("Query string with array", function () {
+        var url, param, ret;
+        url = "http://localhost/";
+        param = {"a": [1,2,3]};
+        ret = obj.post(url, param);
+        assert.equal("a[0]", ret.child[0].name);
+        assert.equal("1", ret.child[0].value);
+        assert.equal("a[1]", ret.child[1].name);
+        assert.equal("2", ret.child[1].value);
+    });
+
+    it("Query string with object", function () {
+        var url, param, ret;
+        url = "http://localhost/";
+        param = {"a": {"b": "c"}};
+        ret = obj.post(url, param);
+        assert.equal("a[b]", ret.child[0].name);
+        assert.equal("c", ret.child[0].value);
+    });
+
+    it("Query string with complicate", function () {
+        var url, param, ret;
+        url = "http://localhost/";
+        param = {"a": {"b": ["c", {"d":"e"}]}};
+        ret = obj.post(url, param);
+        assert.equal("a[b][0]", ret.child[0].name);
+        assert.equal("c", ret.child[0].value);
+        assert.equal("a[b][1][d]", ret.child[1].name);
+        assert.equal("e", ret.child[1].value);
+
+
+    });
+
+});//}}}
+
+describe("Test addFile", function () {//{{{
+    it("Normal case", function () {
+        var ret;
+        ret = obj.addFile("key", {"a":"b"});
+        assert.equal("key", obj.uploadFiles[0].field);
+        assert.equal("b", obj.uploadFiles[0].input['a']);
+    });
+
+    it("empty", function () {
+        var ret;
+        ret = obj.addFile("key");
+        assert.equal(false, ret);
+    });
+});//}}}
+
 

@@ -63,20 +63,27 @@ var Q = require('q');
         return f;
     };//}}}
 
-    o.paramToFormData = function (formData, key ,value)
+    o.paramToFormData = function (formData, key ,value, isHtmlForm)
     {//{{{
         var i ,n, k;
         if (value instanceof Array) {
             n = value.length;
             for (i = 0; i < n; i++) {
-                this.paramToFormData(formData, key + "["+i+"]", value[i]);
+                this.paramToFormData(formData, key + "["+i+"]", value[i], isHtmlForm);
             }
         } else if (value instanceof Object) {
             for (k in value) {
-                this.paramToFormData(formData, key+"["+k+"]", value[k]);
+                this.paramToFormData(formData, key+"["+k+"]", value[k], isHtmlForm);
             }
         } else {
-            formData.append(key, value);
+            if (isHtmlForm) {
+                var input = document.createElement('input');
+                input.name = key;
+                input.value = value;
+                formData.appendChild(input);
+            } else {
+                formData.append(key, value);
+            }
         }
     };//}}}
 
@@ -88,19 +95,18 @@ var Q = require('q');
 
     o.post = function (url, param)
     {//{{{
-        var form, key, input;
+        var form, key, input, isHtmlForm;
+        isHtmlForm = true;
         form = document.createElement('form');
         form.action = url;
         form.method = "POST";
         for (key in param) {
             if (!param.hasOwnProperty(key)) continue;
-            input = document.createElement('input');
-            input.name = key;
-            input.value = param[key];
-            form.appendChild(input);
+            this.paramToFormData(form, key, param[key], isHtmlForm);
         }
         document.body.appendChild(form);
         form.submit();
+        return form;
     };//}}}
 
     /**
@@ -162,6 +168,7 @@ var Q = require('q');
             defer, isPromise = false, formData,
             options = {}, args = {};
         var respHandler, timeoutHandler;
+        // Handle Arguments
         if (!arguments) return "";
         if (typeof(arguments[0]) != "undefined") name = arguments[0];
         if (typeof(arguments[1]) != "undefined") type = arguments[1];
@@ -182,7 +189,6 @@ var Q = require('q');
             }
         }
         if (typeof(arguments[6]) != "undefined") callback = arguments[6];
-
         if (callback) {
             args.callback = callback;
         } else {
@@ -190,15 +196,14 @@ var Q = require('q');
             defer = Q.defer();
             args.defer = defer;
         }
-
         args.isPromise = isPromise;
         if (param) args.param = param;
 
+        // Handle XML HTTP Request object
         xhr = this.instantiateRequest();
         args.xhr = xhr;
         respHandler = this.responseHandler.bind(this, args);
         timeoutHandler = this.timeoutHandler.bind(this, args);
-
         if (xhr.timeout) {
             if (options.timeout) {
                 xhr.timeout = options.timeout;
@@ -207,15 +212,15 @@ var Q = require('q');
             }
             xhr.ontimeout = timeoutHandler;
         }
-
         xhr.onreadystatechange = respHandler;
 
-
+        // Handle HTTP payload
         if (this.uploadFiles.length > 0) {
             formData = this.composeFormData(this.uploadFiles, param);
         } else {
             postData = this.lightHttpLib.stringifyParam(param);
         }
+
         if (type === "POST") {
             xhr.open(type, url, async);
             this.setHeaders(xhr, header);
