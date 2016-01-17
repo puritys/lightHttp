@@ -140,9 +140,9 @@ var Q = require('q');
     o.jsonp = function (url, param, header, callback)
     {//{{{
         var script, jsonpCallback, self;
+        self = this;
         if (!param) param = {};
         this.cleanJsonpCallback();
-        self = this;
         jsonpCallback = "lightHttp_jsonp_" + this.jsonpIndex + "_" + (new Date()).getTime();
         param['callback'] = jsonpCallback;
         window[jsonpCallback] = function(data) {
@@ -303,7 +303,7 @@ var Q = require('q');
         //if (args.callback) args.callback("", respInfo);
     };//}}}
 
-    o.jsonpHander = function () 
+    o.jsonpHandler = function () 
     {
 
     };

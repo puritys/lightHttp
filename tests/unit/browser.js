@@ -233,6 +233,29 @@ describe("Test jsonp request", function () {//{{{
         }
     });
 
+    it("Call jsonp callback and cleanJsonpCallback", function () {
+        var url, param, header, ret;
+        url = "http://localhost/";
+        obj.jsonp(url, param, function (resp) {
+            return resp;
+        });
+        obj.jsonp(url, param, function (resp) {
+            return resp;
+        });
+        for (var key in obj.jsonpCallbackList) {
+            window[key]();
+        }
+
+        for (var key in obj.jsonpCallbackList) {
+            assert.equal(1, obj.jsonpCallbackList[key]);
+            assert.equal("function", typeof(window[key]));
+        }
+        obj.cleanJsonpCallback();
+        for (var key in obj.jsonpCallbackList) {
+            assert.equal("undefined", typeof(window[key]));
+        }
+    });
+
 });//}}}
 
 
