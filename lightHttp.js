@@ -22,11 +22,11 @@ var Q = require('q');
         if (!lib) {
             console.log("Missing library named lightHttpLib");
         }
-        this.jsonpIndex = 1;
+        this.jsonpIndex   = 1;
         this.lightHttpLib = lib; //window.lightHttpLib;
-        this.timeout = 15000; //15 seconds
+        this.timeout      = 15000; //15 seconds
         this.jsonpCallbackList = {};
-        this.uploadFiles = [];
+        this.uploadFiles  = [];
     }//}}}
 
     var o = lightHttp.prototype;
@@ -78,7 +78,7 @@ var Q = require('q');
         } else {
             if (isHtmlForm) {
                 var input = document.createElement('input');
-                input.name = key;
+                input.name  = key;
                 input.value = value;
                 formData.appendChild(input);
             } else {
@@ -142,16 +142,20 @@ var Q = require('q');
         var script, jsonpCallback, self;
         self = this;
         if (!param) param = {};
+        if (typeof(header) == "function") callback = header;
         this.cleanJsonpCallback();
+
+        // Handle JSONP callback.
         jsonpCallback = "lightHttp_jsonp_" + this.jsonpIndex + "_" + (new Date()).getTime();
         param['callback'] = jsonpCallback;
+        this.jsonpCallbackList[jsonpCallback] = 0;
         window[jsonpCallback] = function(data) {
             callback(data, {});
             self.jsonpCallbackList[jsonpCallback] = 1;
         };
-        this.jsonpCallbackList[jsonpCallback] = 0;
+
+        // Make the request.
         url = this.lightHttpLib.addParams(url, param);
-        if (typeof(header) == "function") callback = header;
         script = document.createElement('script');
         script.src = url;
         document.body.appendChild(script);
@@ -192,8 +196,8 @@ var Q = require('q');
         if (callback) {
             args.callback = callback;
         } else {
-            isPromise = true;
-            defer = Q.defer();
+            isPromise  = true;
+            defer      = Q.defer();
             args.defer = defer;
         }
         args.isPromise = isPromise;
