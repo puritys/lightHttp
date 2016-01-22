@@ -53,6 +53,7 @@ describe("Test HTTP GET Promise", function () {
         assert.equal('text/html; charset=utf-8', resp2Header['content-type']);
         assert.equal(200, resp2Header['status-code']);
         assert.equal('OK', resp2Header['status-message']);
+        assert.equal('a=v1', resp2Header['set-cookie'][0]);
 
     });
 

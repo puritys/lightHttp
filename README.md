@@ -24,15 +24,15 @@ npm install -g light-http
 
 ### Asynchronous 
 
-
-
     var http = require('light-http');
     var header = {"user-agent": "Mozilla/5.0 xx"};
     var url = "https://www.google.com.tw";
     
     // Method GET
     http.get(url, {"key":"value"}, header, function(response) {
-        xxx
+        var html = response;
+        var respHeaders = this.getResponseHeaders();
+        console.log(respHeaders['set-cookie']);
     });
     
     // Method POST
