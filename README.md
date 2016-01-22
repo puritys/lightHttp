@@ -79,28 +79,27 @@ npm install -g light-http
 
 
 ### Make a Raw HTTP request
-<pre>
-var http = require('light-http');
-var host = "www.google.com.tw";
-var port = 80;
-var path = "/";
-var cookie = 'SID=; HSID=; SSID=jjj; APISID=;';
-var msg = [
-"GET " + path + " HTTP/1.1",
-"host: " + host,
-"cookie: " + cookie,
-"\r\n"].join("\r\n");
 
-http.rawRequest(host, port, msg)
-    .then(function (resp) {
-        console.log(resp);
-    });
+    var http = require('light-http');
+    var host = "www.google.com.tw";
+    var port = 80;
+    var path = "/";
+    var cookie = 'SID=; HSID=; SSID=jjj; APISID=;';
+    var msg = [
+    "GET " + path + " HTTP/1.1",
+    "host: " + host,
+    "cookie: " + cookie,
+    "\r\n"].join("\r\n");
 
-//http.rawRequest(host, port, msg, function (resp) {
-//    console.log(resp);
-//});
+    http.rawRequest(host, port, msg)
+        .then(function (resp) {
+            console.log(resp);
+        });
 
-</pre>
+    //http.rawRequest(host, port, msg, function (resp) {
+    //    console.log(resp);
+    //});
+
 
 ### Make a Raw HTTPS request (ssl)
 
@@ -109,31 +108,28 @@ You have two ways to indicate this library to use https protocol
 1. Set the port to be "443:ssl".
 2. Add https:// before the value of host.
 
-<pre>
-var http = require('light-http');
-var host = "www.google.com.tw";
-var url = "https://" + host;
-var port = 443; // or port = "443:ssl"
-var path = "/";
-var cookie = 'SID=; HSID=; SSID=jjj; APISID=;';
-var msg = [
-"GET " + path + " HTTP/1.1",
-"host: " + host,
-"cookie: " + cookie,
-"\r\n"].join("\r\n");
+    var http = require('light-http');
+    var host = "www.google.com.tw";
+    var url = "https://" + host;
+    var port = 443; // or port = "443:ssl"
+    var path = "/";
+    var cookie = 'SID=; HSID=; SSID=jjj; APISID=;';
+    var msg = [
+    "GET " + path + " HTTP/1.1",
+    "host: " + host,
+    "cookie: " + cookie,
+    "\r\n"].join("\r\n");
 
-http.rawRequest(url, port, msg)
-    .then(function (resp) {
-        console.log(resp);
-    });
-</pre>
+    http.rawRequest(url, port, msg)
+        .then(function (resp) {
+            console.log(resp);
+        });
 
 
 HTTP Request Error Handling
 ----------------------------
-<pre>
-{ [Error: connect ENETUNREACH] code: 'ENETUNREACH', errno: 'ENETUNREACH', syscall: 'connect' }
-</pre>
+
+    { [Error: connect ENETUNREACH] code: 'ENETUNREACH', errno: 'ENETUNREACH', syscall: 'connect' }
 
 
 Using lightHttp library on client side browser
@@ -150,79 +146,70 @@ Another one is the "lightHttp-simple.min.js", this file do not include the promi
 AJAX (GET)
 ----------
 
-<pre>
-&lt;html>
-&lt;script src="lightHttp.min.js"></script>
-&lt;script>
-var http = new window.lightHttp();
-http.ajax("test.html", {"count": 20}, function (content) {
-    console.log(content);
-});
-&lt;/script>
-&lt;/html>
-</pre>
+    &lt;html>
+    &lt;script src="lightHttp.min.js"></script>
+    &lt;script>
+    var http = new window.lightHttp();
+    http.ajax("test.html", {"count": 20}, function (content) {
+        console.log(content);
+    });
+    &lt;/script>
+    &lt;/html>
 
 AJAX (GET) Promise
 ----------
 
-<pre>
-&lt;html>
-&lt;script src="lightHttp.min.js"></script>
-&lt;script>
-var http = new window.lightHttp();
-http.ajax("test.html", {"count": 20})
-    .then(function (content) {
-        console.log(content);
-    });
-&lt;/script>
-&lt;/html>
-</pre>
+    &lt;html>
+    &lt;script src="lightHttp.min.js"></script>
+    &lt;script>
+    var http = new window.lightHttp();
+    http.ajax("test.html", {"count": 20})
+        .then(function (content) {
+            console.log(content);
+        });
+    &lt;/script>
+    &lt;/html>
 
 AJAX (POST)
 ----------
 
-<pre>
-&lt;html>
-&lt;script src="lightHttp.min.js"></script>
-&lt;script>
-var http = new window.lightHttp();
-http.ajaxPost("test.php", {"count": 20}, function (content) {
-    console.log(content);
-});
-&lt;/script>
-&lt;/html>
-</pre>
+    &lt;html>
+    &lt;script src="lightHttp.min.js"></script>
+    &lt;script>
+    var http = new window.lightHttp();
+    http.ajaxPost("test.php", {"count": 20}, function (content) {
+        console.log(content);
+    });
+    &lt;/script>
+    &lt;/html>
 
 JSONP
 ------
-<pre>
-&lt;html>
-&lt;script src="lightHttp.min.js"></script>
-&lt;script>
-var http = new window.lightHttp();
-http.jsonp("testJsonp.php", {"test":1}, function (resp) {
-    console.log(resp);
-});
 
-&lt;/script>
-&lt;/html>
-</pre>
+    &lt;html>
+    &lt;script src="lightHttp.min.js"></script>
+    &lt;script>
+    var http = new window.lightHttp();
+    http.jsonp("testJsonp.php", {"test":1}, function (resp) {
+        console.log(resp);
+    });
+
+    &lt;/script>
+    &lt;/html>
 
 AJAX (Upload file)
 ----------
 
-<pre>
-&lt;html>
-&lt;script src="lightHttp.min.js"></script>
-&lt;input type="file" id="fileInput" />
-&lt;script>
-var http = new window.lightHttp();
-http.addFile("fileData", document.getElementById("fileInput"));
-http.ajaxPost("test.php", {"count": 20}, function (content) {
-    console.log(content);
-});
-&lt;/script>
-&lt;/html>
-</pre>
+    &lt;html>
+    &lt;script src="lightHttp.min.js"></script>
+    &lt;input type="file" id="fileInput" />
+    &lt;script>
+    var http = new window.lightHttp();
+    http.addFile("fileData", document.getElementById("fileInput"));
+    http.ajaxPost("test.php", {"count": 20}, function (content) {
+        console.log(content);
+    });
+    &lt;/script>
+    &lt;/html>
 
 
