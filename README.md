@@ -148,70 +148,70 @@ Another one is the "lightHttp-simple.min.js", this file do not include the promi
 AJAX (GET)
 ----------
 
-    &lt;html>
-    &lt;script src="lightHttp.min.js"></script>
-    &lt;script>
+    <html>
+    <script src="lightHttp.min.js"></script>
+    <script>
     var http = new window.lightHttp();
     http.ajax("test.html", {"count": 20}, function (content) {
         console.log(content);
     });
-    &lt;/script>
-    &lt;/html>
+    </script>
+    </html>
 
 AJAX (GET) Promise
 ----------
 
-    &lt;html>
-    &lt;script src="lightHttp.min.js"></script>
-    &lt;script>
+    <html>
+    <script src="lightHttp.min.js"></script>
+    <script>
     var http = new window.lightHttp();
     http.ajax("test.html", {"count": 20})
         .then(function (content) {
             console.log(content);
         });
-    &lt;/script>
-    &lt;/html>
+    </script>
+    </html>
 
 AJAX (POST)
 ----------
 
-    &lt;html>
-    &lt;script src="lightHttp.min.js"></script>
-    &lt;script>
+    <html>
+    <script src="lightHttp.min.js"></script>
+    <script>
     var http = new window.lightHttp();
     http.ajaxPost("test.php", {"count": 20}, function (content) {
         console.log(content);
     });
-    &lt;/script>
-    &lt;/html>
+    </script>
+    </html>
 
 JSONP
 ------
 
-    &lt;html>
-    &lt;script src="lightHttp.min.js"></script>
-    &lt;script>
+    <html>
+    <script src="lightHttp.min.js"></script>
+    <script>
     var http = new window.lightHttp();
     http.jsonp("testJsonp.php", {"test":1}, function (resp) {
         console.log(resp);
     });
 
-    &lt;/script>
-    &lt;/html>
+    </script>
+    </html>
 
 AJAX (Upload file)
 ----------
 
-    &lt;html>
-    &lt;script src="lightHttp.min.js"></script>
-    &lt;input type="file" id="fileInput" />
-    &lt;script>
+    <html>
+    <script src="lightHttp.min.js"></script>
+    <input type="file" id="fileInput" />
+    <script>
     var http = new window.lightHttp();
     http.addFile("fileData", document.getElementById("fileInput"));
     http.ajaxPost("test.php", {"count": 20}, function (content) {
         console.log(content);
     });
-    &lt;/script>
-    &lt;/html>
+    </script>
+    </html>
 
 
