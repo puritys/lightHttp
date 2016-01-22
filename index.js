@@ -17,11 +17,24 @@ var mime = require('mime');
 function lightHttp() {
     this.uploadFiles = [];
     this.respHeaders = {};
+    this.httpsAgent = "";
 }
 
 var o = lightHttp.prototype;
 o.uploadFiles = [];
 o.respHeaders = {};
+o.httpsAgent = "";
+
+o.enableSslVerification = function () 
+{
+    this.httpsAgent = new https.Agent({"rejectUnauthorized": true});
+};
+
+o.disableSslVerification = function () 
+{
+    this.httpsAgent = new https.Agent({"rejectUnauthorized": false});
+};
+
 o.disableDebugMode = function () 
 {
     debugMode = false;
@@ -220,6 +233,7 @@ o.request = function (method, url, param, header, callback)
 
     if ("https" === urlInfo['protocol']) {
         req = https;
+        if (this.httpsAgent) options.agent = this.httpsAgent;
     } else {
         req = http;
     }

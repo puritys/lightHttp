@@ -23,7 +23,45 @@ describe("Test HTTP GET", function () {
     });
 });
 
-describe("Test HTTP GET Promise", function () {
+describe("Test HTTPS with self signatured certification", function () {
+
+    var resp, respHeader;
+    before(function (done) {
+        var header = {unit: 11};
+        lightHttp.disableSslVerification();
+        lightHttp.get("https://www.puritys.me/unit.php", {unit: 1}, header)
+            .then(function (text) {
+                respHeader = lightHttp.getResponseHeaders();
+                resp = JSON.parse(text);
+                done();
+            });
+    });
+    it("normal case", function () {
+        assert.equal(11, resp.unit);
+    });
+
+});
+
+describe("Test HTTPS are blocked by ssl host verification", function () {
+    var resp, respHeader;
+    before(function (done) {
+        var header = {unit: 11};
+        lightHttp.enableSslVerification();
+        lightHttp.get("https://www.puritys.me/unit.php", {unit: 1}, header)
+            .then(function (text) {
+            })
+            .fail(function (err) {
+                resp = JSON.parse(err);
+                done();
+            });
+    });
+    it("normal case", function () {
+        assert.equal('SELF_SIGNED_CERT_IN_CHAIN', resp.code);
+    });
+
+});
+
+describe("Test HTTP GET Promise", function () {//{{{
     var resp1, resp1Header;
     before(function (done) {
         // Method GET
@@ -60,9 +98,9 @@ describe("Test HTTP GET Promise", function () {
         assert.equal('a=v1', resp2Header['set-cookie'][0].match(/[^;]+/)[0]);
         assert.equal('b=v2', resp2Header['set-cookie'][1]);
     });
-});
+});//}}}
 
-describe("Test Object cookie", function () {
+describe("Test Object cookie", function () {//{{{
     var resp3, resp3Header;
     before(function (done) {
         // Method GET
@@ -77,9 +115,9 @@ describe("Test Object cookie", function () {
     it("call with cookie which format is a JSON object", function () {
         assert.equal('a=b; c=d', resp3['cookie']);
     });
-});
+});//}}}
 
-describe("Test Array Cookie", function () {
+describe("Test Array Cookie", function () {//{{{
 
     var resp4, resp4Header;
     before(function (done) {
@@ -96,5 +134,5 @@ describe("Test Array Cookie", function () {
         assert.equal('a=z; c=d', resp4['cookie']);
     });
 
-});
+});//}}}
 
