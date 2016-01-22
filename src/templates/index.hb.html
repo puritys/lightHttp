@@ -65,3 +65,24 @@
         });
 </pre>
 
+
+
+
+
+<h2>Error Handle</h2>
+<pre>
+    var http = require('light-http');
+    var header = {"user-agent": "Mozilla/5.0 xx"};
+    var url = "https://www.google.com.tw";
+
+    // Method GET
+    http.get(url, {"key":"value"}, header)
+        .then(function(response) {
+            xxx
+        });
+        .fail(function (err) {
+            console.log(err);
+        });
+    
+</pre>
+
