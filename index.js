@@ -63,50 +63,6 @@ o.addFileContent = function (field, fileName, content)
     });
 };//}}}
 
-// clear setting
-o.clear = function () 
-{
-    this.isMultipart = false;
-    this.uploadFiles = [];
-    this.respHeaders = {};
-};
-
-o.setResponseHeaders = function (headers)
-{
-    this.respHeaders = headers;
-};
-
-o.appendResponseHeader = function (key, value)
-{
-    this.respHeaders[key] = value;
-};
-
-
-o.getResponseHeaders = function () 
-{
-    return this.respHeaders;
-};
-
-o.get = function(url, param, header, callback) 
-{//{{{
-    return this.request('GET', url, param, header, callback);
-};//}}}
-
-o.post = function (url, param, header, callback) 
-{//{{{
-    return this.request('POST', url, param, header, callback);
-};//}}}
-
-o.deleteMethod = function (url, param, header, callback) 
-{//{{{
-    return this.request('DELETE', url, param, header, callback);
-};//}}}
-
-o.put = function (url, param, header, callback) 
-{//{{{
-    return this.request('PUT', url, param, header, callback);
-};//}}}
-
 o.createMultipartData = function (param) 
 {//{{{
     var payload = "", boundary, i ,n, 
@@ -149,6 +105,49 @@ o.createBoundary = function ()
     return b;
 };//}}}
 
+// clear setting
+o.clear = function () 
+{
+    this.isMultipart = false;
+    this.uploadFiles = [];
+    this.respHeaders = {};
+};
+
+o.setResponseHeaders = function (headers)
+{
+    this.respHeaders = headers;
+};
+
+o.appendResponseHeader = function (key, value)
+{
+    this.respHeaders[key] = value;
+};
+
+o.getResponseHeaders = function () 
+{
+    return this.respHeaders;
+};
+
+o.get = function(url, param, header, callback) 
+{//{{{
+    return this.request('GET', url, param, header, callback);
+};//}}}
+
+o.post = function (url, param, header, callback) 
+{//{{{
+    return this.request('POST', url, param, header, callback);
+};//}}}
+
+o.deleteMethod = function (url, param, header, callback) 
+{//{{{
+    return this.request('DELETE', url, param, header, callback);
+};//}}}
+
+o.put = function (url, param, header, callback) 
+{//{{{
+    return this.request('PUT', url, param, header, callback);
+};//}}}
+
 o.request = function (method, url, param, header, callback) 
 {//{{{
     var len, req, options = {}, urlInfo, resp = "", fUrl = "", self,
@@ -164,7 +163,13 @@ o.request = function (method, url, param, header, callback)
         header = {};
     }
     if (typeof(header) === "undefined") header = {};
-
+    if (header.cookie && 
+        (header.cookie instanceof Object ||
+         header.cookie instanceof Array
+        )) {
+        header.cookie = lib.cookieToString(header.cookie);
+    }
+ 
     if (typeof(callback) === "undefined" || 
         Object.prototype.toString.call(callback) !== "[object Function]"
        ) {

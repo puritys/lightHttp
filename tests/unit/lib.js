@@ -2,7 +2,7 @@ var assert = require('assert');
 
 var obj = require('./../../lib.js');
 
-describe("Test parseUrl", function () {
+describe("Test parseUrl", function () {//{{{
     it("url without paramter", function () {
         var url, ret;
         url = "http://localhost:91";
@@ -40,9 +40,9 @@ describe("Test parseUrl", function () {
         ret = obj.parseUrl(url);
         assert.equal(8080, ret.port);
     });
-});
+});//}}}
 
-describe("Test stringify parameter", function () {
+describe("Test stringify parameter", function () {//{{{
     it("parameter with normal type", function () {
         var params, ret;
         params = {
@@ -86,5 +86,21 @@ describe("Test stringify parameter", function () {
     });
 
 
+});//}}}
+
+describe("Test cookieToString", function () {//{{{
+    it("Cookie's format is a Object", function () {
+        var ret, cookie;
+        cookie = {"a":"b", "c":"d"};
+        ret = obj.cookieToString(cookie);
+        assert.equal('a=b; c=d', ret);
+    });
+
+    it("Cookie's format is a Array", function () {
+        var ret, cookie;
+        cookie = ["a=b", "c=d"];
+        ret = obj.cookieToString(cookie);
+        assert.equal('a=b; c=d', ret);
+    });
 });
 

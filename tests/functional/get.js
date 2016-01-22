@@ -41,23 +41,60 @@ describe("Test HTTP GET Promise", function () {
     var resp2, resp2Header;
     before(function (done) {
         // Method GET
-        lightHttp.get(myUrl + "/unit.php", "", {unit: 10})
+        var header = {"cookie": "aaa=vvv", unit: 10};
+        lightHttp.get(myUrl + "/unit.php", "", header)
             .then(function (resp, respHeader) {
                 resp2Header = lightHttp.getResponseHeaders();
                 resp2 = JSON.parse(resp);
                 done();
             });
     });
+
     it("call with the header", function () {
         assert.equal(10, resp2['unit']);
+        assert.equal('aaa=vvv', resp2['cookie']);
         assert.equal('text/html; charset=utf-8', resp2Header['content-type']);
+
         assert.equal(200, resp2Header['status-code']);
         assert.equal('OK', resp2Header['status-message']);
-        assert.equal('a=v1', resp2Header['set-cookie'][0]);
-
+        assert.equal('a=v1', resp2Header['set-cookie'][0].match(/[^;]+/)[0]);
+        assert.equal('b=v2', resp2Header['set-cookie'][1]);
     });
+});
 
+describe("Test Object cookie", function () {
+    var resp3, resp3Header;
+    before(function (done) {
+        // Method GET
+        var header = {"cookie": {"a":"b", "c":"d"}, unit: 11};
+        lightHttp.get(myUrl + "/unit.php", "", header)
+            .then(function (resp, respHeader) {
+                resp3Header = lightHttp.getResponseHeaders();
+                resp3 = JSON.parse(resp);
+                done();
+            });
+    });
+    it("call with cookie which format is a JSON object", function () {
+        assert.equal('a=b; c=d', resp3['cookie']);
+    });
+});
 
+describe("Test Array Cookie", function () {
+
+    var resp4, resp4Header;
+    before(function (done) {
+        // Method GET
+        var header = {"cookie": ["a=z", "c=d"], unit: 11};
+        lightHttp.get(myUrl + "/unit.php", "", header)
+            .then(function (resp, respHeader) {
+                resp4Header = lightHttp.getResponseHeaders();
+                resp4 = JSON.parse(resp);
+                done();
+            });
+    });
+    it("call with cookie which format is a array", function () {
+        assert.equal('a=z; c=d', resp4['cookie']);
+    });
 
 });
 

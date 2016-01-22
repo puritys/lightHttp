@@ -99,7 +99,20 @@
             }
             url += paramStr;
             return url;
-        }//}}}
+        },//}}}
+
+        cookieToString: function (cookies)
+        {
+            var str = [], key;
+            if (cookies instanceof Array) {
+                return cookies.join('; ');
+            } else {
+                for (key in cookies) {
+                    str.push(key + '=' + cookies[key]);
+                }
+            }
+            return str.join('; ');
+        }
 
     };
 
