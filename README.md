@@ -25,22 +25,21 @@ npm install -g light-http
 ### Asynchronous 
 
 
-<pre>
-var http = require('light-http');
-var header = {"user-agent": "Mozilla/5.0 xx"};
-var url = "https://www.google.com.tw";
 
-// Method GET
-http.get(url, {"key":"value"}, header, function(response) {
-    xxx
-});
+    var http = require('light-http');
+    var header = {"user-agent": "Mozilla/5.0 xx"};
+    var url = "https://www.google.com.tw";
+    
+    // Method GET
+    http.get(url, {"key":"value"}, header, function(response) {
+        xxx
+    });
+    
+    // Method POST
+    http.post(url, {"key":"value"}, header, function(response) {
+        xxx
+    });
 
-// Method POST
-http.post(url, {"key":"value"}, header, function(response) {
-    xxx
-});
-
-</pre>
 
 ### Synchronous - Using Promise
 
