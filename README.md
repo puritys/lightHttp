@@ -108,6 +108,8 @@ You have two ways to indicate this library to use https protocol
 1. Set the port to be "443:ssl".
 2. Add https:// before the value of host.
 
+### Example
+
     var http = require('light-http');
     var host = "www.google.com.tw";
     var url = "https://" + host;
@@ -119,7 +121,7 @@ You have two ways to indicate this library to use https protocol
     "host: " + host,
     "cookie: " + cookie,
     "\r\n"].join("\r\n");
-
+    
     http.rawRequest(url, port, msg)
         .then(function (resp) {
             console.log(resp);
