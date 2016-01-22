@@ -31,7 +31,7 @@ npm install -g light-http
     // Method GET
     http.get(url, {"key":"value"}, header, function(response) {
         var html = response;
-        var respHeaders = this.getResponseHeaders();
+        var respHeaders = http.getResponseHeaders();
         console.log(respHeaders['set-cookie']);
     });
     
