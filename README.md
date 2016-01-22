@@ -43,42 +43,40 @@ npm install -g light-http
 
 ### Synchronous - Using Promise
 
-<pre>
-var http = require('light-http');
-var header = {"user-agent": "Mozilla/5.0 xx"};
-var url = "https://www.google.com.tw";
 
-// Method GET
-http.get(url, {"key":"value"}, header)
-    .then(function(response) {
-        xxx
-    });
+    var http = require('light-http');
+    var header = {"user-agent": "Mozilla/5.0 xx"};
+    var url = "https://www.google.com.tw";
+    
+    // Method GET
+    http.get(url, {"key":"value"}, header)
+        .then(function(response) {
+            xxx
+        });
+    
+    // Method POST
+    http.post(url, {"key":"value"}, header)
+        .then(function(response) {
+            xxx
+        });
 
-// Method POST
-http.post(url, {"key":"value"}, header)
-    .then(function(response) {
-        xxx
-    });
-
-</pre>
 
 
 ### Upload file
 
-<pre>
-var http = require('light-http');
-var header = {"user-agent": "Mozilla/5.0 xx"};
-var url = "https://www.google.com.tw";
 
-http.addFile("fileData", "/var/www/file.txt");
-http.addFile("fileData2", "/var/www/file2.txt");
-http.addFileContent("fileData3", "file3.txt", "The file content");
+    var http = require('light-http');
+    var header = {"user-agent": "Mozilla/5.0 xx"};
+    var url = "https://www.google.com.tw";
+    
+    http.addFile("fileData", "/var/www/file.txt");
+    http.addFile("fileData2", "/var/www/file2.txt");
+    http.addFileContent("fileData3", "file3.txt", "The file content");
+    
+    http.post(baseUrl + "/xxx.php", {"age":"13"}, header, function(response) {
+        var resp = JSON.parse(response);
+    });
 
-http.post(baseUrl + "/xxx.php", {"age":"13"}, header, function(response) {
-    var resp = JSON.parse(response);
-});
-
-</pre>
 
 ### Make a Raw HTTP request
 <pre>
