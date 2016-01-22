@@ -25,23 +25,34 @@ describe("Test HTTP POST", function () {
 });
 
 describe("Test HTTP POST Promise", function () {
-
-    it("call post function", function () {
+    var resp1;
+    before(function (done) {
         lightHttp.post(baseUrl + "/unit.php", {"age": 13})
             .then(function (resp) {
-                var data;
-                data = JSON.parse(resp);
-                assert.equal(13, data.age);
+                resp1 = JSON.parse(resp);
+                done();
             });
+
+    });
+
+    it("call post function", function () {
+        assert.equal(13, resp1.age);
+    });
+});
+
+describe("Test HTTP POST Promise2", function () {
+    var resp1;
+    before(function (done) {
+        lightHttp.post(baseUrl + "/unit.php", {}, {"unit": 10})
+            .then(function (resp) {
+                resp1 = JSON.parse(resp);
+                done();
+            });
+
     });
 
     it("post with the header", function () {
-        lightHttp.post(baseUrl + "/unit.php", {}, {"unit": 10})
-            .then(function (resp) {
-                var data;
-                data = JSON.parse(resp);
-                assert.equal(10, data.unit);
-            });
+        assert.equal(10, resp1.unit);
     });
 
 
@@ -64,9 +75,6 @@ describe("Test HTTP POST a raw string", function () {
         assert.equal('[\"b\",\"c\"]', data.a);
         assert.equal('p', data.z);
         assert.equal('["1","2"]', data.c);
-
-
-
     });
 
 });

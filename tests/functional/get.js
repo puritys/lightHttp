@@ -24,23 +24,36 @@ describe("Test HTTP GET", function () {
 });
 
 describe("Test HTTP GET Promise", function () {
-
-    it("call get function", function () {
+    var resp1, resp1Header;
+    before(function (done) {
         // Method GET
         lightHttp.get(baseUrl)
             .then(function (resp) {
-                var str = resp.match(/doctype html/)[0];
-                assert.equal("doctype html", str);
+                resp1 = resp.match(/doctype html/)[0];
+                done();
             });
     });
 
-    it("call with the header", function () {
+    it("call get function", function () {
+        assert.equal("doctype html", resp1);
+    });
+
+    var resp2, resp2Header;
+    before(function (done) {
         // Method GET
         lightHttp.get(myUrl + "/unit.php", "", {unit: 10})
-            .then(function (resp) {
-                var data = JSON.parse(resp);
-                assert.equal(10, data['unit']);
+            .then(function (resp, respHeader) {
+                resp2Header = lightHttp.getResponseHeaders();
+                resp2 = JSON.parse(resp);
+                done();
             });
+    });
+    it("call with the header", function () {
+        assert.equal(10, resp2['unit']);
+        assert.equal('text/html; charset=utf-8', resp2Header['content-type']);
+        assert.equal(200, resp2Header['status-code']);
+        assert.equal('OK', resp2Header['status-message']);
+
     });
 
 

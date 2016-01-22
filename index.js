@@ -16,10 +16,12 @@ var mime = require('mime');
 
 function lightHttp() {
     this.uploadFiles = [];
+    this.respHeaders = {};
 }
 
 var o = lightHttp.prototype;
 o.uploadFiles = [];
+o.respHeaders = {};
 o.disableDebugMode = function () 
 {
     debugMode = false;
@@ -66,6 +68,23 @@ o.clear = function ()
 {
     this.isMultipart = false;
     this.uploadFiles = [];
+    this.respHeaders = {};
+};
+
+o.setResponseHeaders = function (headers)
+{
+    this.respHeaders = headers;
+};
+
+o.appendResponseHeader = function (key, value)
+{
+    this.respHeaders[key] = value;
+};
+
+
+o.getResponseHeaders = function () 
+{
+    return this.respHeaders;
 };
 
 o.get = function(url, param, header, callback) 
@@ -132,8 +151,9 @@ o.createBoundary = function ()
 
 o.request = function (method, url, param, header, callback) 
 {//{{{
-    var len, req, options = {}, urlInfo, resp = "", fUrl = "", 
+    var len, req, options = {}, urlInfo, resp = "", fUrl = "", self,
         isSync = false, defer, postData;
+    self = this;
     if (typeof(callback) === "undefined" && 
         typeof(header) != "undefined" && 
         ( Object.prototype.toString.call(header) === "[object String]" || 
@@ -209,6 +229,10 @@ o.request = function (method, url, param, header, callback)
             resp += chunk;
         });
         r.on("end", function () {
+            if (r.headers) self.setResponseHeaders(r.headers);
+            self.appendResponseHeader("status-code", r.statusCode);
+            self.appendResponseHeader("status-message", r.statusMessage);
+
             if (true === isSync) {
                 defer.resolve(resp);
             } else {

@@ -3,6 +3,15 @@ var assert = require('assert');
 var obj = require('./../../lib.js');
 
 describe("Test parseUrl", function () {
+    it("url without paramter", function () {
+        var url, ret;
+        url = "http://localhost:91";
+        ret = obj.parseUrl(url);
+        assert.equal('localhost', ret.host);
+        assert.equal(91, ret.port);
+        assert.equal('/', ret.path);
+        assert.equal('http', ret.protocol);
+    });
 
     it("url with paramter", function () {
         var url, ret;
