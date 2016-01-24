@@ -142,7 +142,7 @@ describe("Test following location (promise) - auto redirect to specific location
     before(function (done) {
         // Method GET
         var header = {unit: 1};
-        lightHttp.followLoaction = true;
+        lightHttp.followLocation = true;
         lightHttp.get(myUrl + "/unit.php", {"redirect": 1}, header)
             .then(function (text) {
                 respHeader = lightHttp.getResponseHeaders();
@@ -162,7 +162,7 @@ describe("Test following location - auto redirect to specific location", functio
     before(function (done) {
         // Method GET
         var header = {unit: 1};
-        lightHttp.followLoaction = true;
+        lightHttp.followLocation = true;
         lightHttp.get(myUrl + "/unit.php", {"redirect": 1}, header, function (text) {
                 respHeader = lightHttp.getResponseHeaders();
                 resp = text;
@@ -181,7 +181,7 @@ describe("Test following location (promise) - no redirect", function () {//{{{
     before(function (done) {
         // Method GET
         var header = {unit: 1};
-        lightHttp.followLoaction = false;
+        lightHttp.followLocation = false;
         lightHttp.get(myUrl + "/unit.php", {"redirect": 1}, header)
             .then(function (text) {
                 respHeader = lightHttp.getResponseHeaders();
@@ -200,7 +200,7 @@ describe("Test following location - no redirect", function () {//{{{
     before(function (done) {
         // Method GET
         var header = {unit: 1};
-        lightHttp.followLoaction = false;
+        lightHttp.followLocation = false;
         lightHttp.get(myUrl + "/unit.php", {"redirect": 1}, header, function (text) {
                 respHeader = lightHttp.getResponseHeaders();
                 done();

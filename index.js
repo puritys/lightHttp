@@ -25,7 +25,7 @@ var o = lightHttp.prototype;
 o.uploadFiles = [];
 o.respHeaders = {};
 o.httpsAgent = "";
-o.followLoaction = true;
+o.followLocation = true;
 
 o.enableSslVerification = function () 
 {
@@ -270,7 +270,7 @@ o.request = function (method, url, param, header, callback)
             if (r.headers) self.setResponseHeaders(r.headers);
             self.appendResponseHeader("status-code", r.statusCode);
             self.appendResponseHeader("status-message", r.statusMessage);
-            if (self.followLoaction === true &&
+            if (self.followLocation === true &&
                 (r.statusCode === 301 || r.statusCode === 302)) {
                 self.redirectToLocation(r.headers, defer, callback, isSync);
             } else {
