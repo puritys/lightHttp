@@ -136,3 +136,79 @@ describe("Test Array Cookie", function () {//{{{
 
 });//}}}
 
+describe("Test following location (promise) - auto redirect to specific location", function () {//{{{
+
+    var resp, respHeader;
+    before(function (done) {
+        // Method GET
+        var header = {unit: 1};
+        lightHttp.followLoaction = true;
+        lightHttp.get(myUrl + "/unit.php", {"redirect": 1}, header)
+            .then(function (text) {
+                respHeader = lightHttp.getResponseHeaders();
+                resp = text;
+                done();
+            });
+    });
+    it("case", function () {
+        assert.equal('doctype html', resp.match(/doctype html/)[0]);
+    });
+
+});//}}}
+
+describe("Test following location - auto redirect to specific location", function () {//{{{
+
+    var resp, respHeader;
+    before(function (done) {
+        // Method GET
+        var header = {unit: 1};
+        lightHttp.followLoaction = true;
+        lightHttp.get(myUrl + "/unit.php", {"redirect": 1}, header, function (text) {
+                respHeader = lightHttp.getResponseHeaders();
+                resp = text;
+                done();
+            });
+    });
+    it("case", function () {
+        assert.equal('doctype html', resp.match(/doctype html/)[0]);
+    });
+
+});//}}}
+
+describe("Test following location (promise) - no redirect", function () {//{{{
+
+    var resp, respHeader;
+    before(function (done) {
+        // Method GET
+        var header = {unit: 1};
+        lightHttp.followLoaction = false;
+        lightHttp.get(myUrl + "/unit.php", {"redirect": 1}, header)
+            .then(function (text) {
+                respHeader = lightHttp.getResponseHeaders();
+                done();
+            });
+    });
+    it("case", function () {
+        assert.equal('http://www.google.com.tw/', respHeader.location);    
+    });
+
+});//}}}
+
+describe("Test following location - no redirect", function () {//{{{
+
+    var resp, respHeader;
+    before(function (done) {
+        // Method GET
+        var header = {unit: 1};
+        lightHttp.followLoaction = false;
+        lightHttp.get(myUrl + "/unit.php", {"redirect": 1}, header, function (text) {
+                respHeader = lightHttp.getResponseHeaders();
+                done();
+            });
+    });
+    it("case", function () {
+        assert.equal('http://www.google.com.tw/', respHeader.location);    
+    });
+
+});//}}}
+

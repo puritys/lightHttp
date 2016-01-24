@@ -18,12 +18,14 @@ function lightHttp() {
     this.uploadFiles = [];
     this.respHeaders = {};
     this.httpsAgent = "";
+    this.followLocation = true;
 }
 
 var o = lightHttp.prototype;
 o.uploadFiles = [];
 o.respHeaders = {};
 o.httpsAgent = "";
+o.followLoaction = true;
 
 o.enableSslVerification = function () 
 {
@@ -141,6 +143,23 @@ o.getResponseHeaders = function ()
     return this.respHeaders;
 };
 
+o.redirectToLocation = function (headers, defer, callback, isSync) 
+{//{{{
+    var url =  (headers.location) ? headers.location : headers.Location;
+
+    if (true === isSync) {
+        this.get(url, {}, {})
+            .then(function (text) {
+                defer.resolve(text);
+            });
+    } else {
+        this.get(url, {}, {})
+            .then(function (text) {
+                callback(text);
+            });
+    }
+}//}}}
+
 o.get = function(url, param, header, callback) 
 {//{{{
     return this.request('GET', url, param, header, callback);
@@ -251,11 +270,15 @@ o.request = function (method, url, param, header, callback)
             if (r.headers) self.setResponseHeaders(r.headers);
             self.appendResponseHeader("status-code", r.statusCode);
             self.appendResponseHeader("status-message", r.statusMessage);
-
-            if (true === isSync) {
-                defer.resolve(resp);
+            if (self.followLoaction === true &&
+                (r.statusCode === 301 || r.statusCode === 302)) {
+                self.redirectToLocation(r.headers, defer, callback, isSync);
             } else {
-                callback(resp);
+                if (true === isSync) {
+                    defer.resolve(resp);
+                } else {
+                    callback(resp);
+                }
             }
         });
     });
