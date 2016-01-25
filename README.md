@@ -1,18 +1,16 @@
 
+Light-http is a very light library it could easily make a http & https request, also support asynchronous and synchonrous at the same time.
+
+You can use this library on server side Node.js  and client side JavaScript.
+
+
 [[light-http NPM] (https://www.npmjs.com/package/light-http)]
-
-English Document:
-* http://puritys.github.io/lightHttp/dest/en/index.html
-
-中文文件
-* http://puritys.github.io/lightHttp/dest/tw/index.html
+[[English Document] ( http://puritys.github.io/lightHttp/dest/en/index.html)]
+[[中文文件] (http://puritys.github.io/lightHttp/dest/tw/index.html)]
 
 
 Travis CI status: [![Unit testing](https://travis-ci.org/puritys/lightHttp.png?branch=master)](https://travis-ci.org/puritys/lightHttp) [![Coverage Status](https://coveralls.io/repos/puritys/lightHttp/badge.png?branch=master)](https://coveralls.io/r/puritys/lightHttp?branch=master)
 
-Light-http is a very light library it could easily make a http & https request, also support asynchronous and synchonrous at the same time.
-
-You can use this library on server side Node.js  and client side JavaScript.
 
 Let's try it !
 
