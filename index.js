@@ -332,7 +332,12 @@ o.rawRequest = function (host, port, content, callback)
 
     client.on("data", function (resp) {
         response += resp;
-        client.end();
+        if (resp &&
+            resp.length > 5 &&
+            resp.toString().substr(-5, 5) === "0\x0d\x0a\x0d\x0a"
+        ) {
+            client.end();
+        }
     });
 
     client.on("end", function () {
