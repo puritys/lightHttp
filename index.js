@@ -319,8 +319,9 @@ o.rawRequest = function (host, port, content, callback)
         port = parseInt(port, 10);
     }
 
-    host = host.replace(/^https?:\/\//, '');
-    host = host.replace(/\/.*$/, '');
+    host = host.replace(/^https?:\/\//, '')
+               .replace(/\/.*$/, '')
+               .replace(/:[0-9]+/, '');
 
     if (true === debugMode) console.log("Request content: \r\n" + content);
 
