@@ -10,12 +10,15 @@ var msg = [
 "cookie: " + cookie,
 "\r\n"].join("\r\n");
 
-describe("Test asynchronous Raw Request", function () {//{{{
+describe("Test asynchronous Raw Request1", function () {//{{{
     var content;
     before(function(done) {
         http.enableDebugMode();
         http.rawRequest(host, port, msg, function (resp) {
             content = resp;
+            done();
+        }, function (err) {
+            content = "has a error";
             done();
         });
         http.disableDebugMode();
@@ -23,7 +26,6 @@ describe("Test asynchronous Raw Request", function () {//{{{
     it("normal", function () {
         var reg = /<\!DOCTYPE[\s]+html>/i;
         var match = content.match(reg);
-
         assert.equal('<!doctype html>', match);
     });
 

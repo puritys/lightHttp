@@ -42,13 +42,16 @@ describe("Test HTTPS with self signatured certification", function () {
 
 });
 
-describe("Test HTTPS are blocked by ssl host verification", function () {
+describe("Test HTTPS are passed  by ssl host verification", function () {
     var resp, respHeader;
     before(function (done) {
         var header = {unit: 11};
         lightHttp.enableSslVerification();
         lightHttp.get("https://www.puritys.me/unit.php", {unit: 1}, header)
             .then(function (text) {
+                respHeader = lightHttp.getResponseHeaders();
+                resp = JSON.parse(text);
+                done();
             })
             .fail(function (err) {
                 resp = JSON.parse(err);
@@ -56,7 +59,8 @@ describe("Test HTTPS are blocked by ssl host verification", function () {
             });
     });
     it("normal case", function () {
-        assert.equal('SELF_SIGNED_CERT_IN_CHAIN', resp.code);
+        //assert.equal('SELF_SIGNED_CERT_IN_CHAIN', resp.code);
+        assert.equal(11, resp.unit);
     });
 
 });

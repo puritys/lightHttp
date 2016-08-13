@@ -3,7 +3,6 @@
 
     var lib = {
         parseUrl: function(url) {//{{{
-            var i, n, pm, pos, key, value;
             var regUrl, matches, ret, param = {};
             // (https) (host) (port) (path) (param)
             regUrl = /(https?):\/\/([a-z0-9][a-z0-9\-\.]+[a-z0-9])(:[0-9]+)?(\/[^\?]*)?\??(.*)/i;
@@ -35,23 +34,7 @@
             }
 
             if (matches && matches[5]) {
-                pm = matches[5].split(/&/);
-                n = pm.length;
-                for (i = 0; i < n; i++) {
-                    pos = pm[i].indexOf("=");
-                    key = pm[i].substr(0, pos);
-                    value = pm[i].substr(pos + 1, pm[i].length - pos - 1);
-                    if (param[key]) {
-                        if (Object.prototype.toString.call(param[key]) === '[object Array]') {
-                            param[key].push(value);
-                        } else {
-                            param[key] = [param[key], value];
-                        }
-                    } else {
-                        param[key] = value;
-                    }
-                }
-                ret['param'] = param;
+                ret['param'] = this.stringToParam(matches[5]);
             }
 
             return ret;
@@ -83,12 +66,45 @@
             }
         },//}}}
 
+        stringToParam: function (string) 
+        {//{{{
+            var pm, i, n, value, pos, key, param = {};
+            pm = string.split(/&/);
+            n = pm.length;
+            for (i = 0; i < n; i++) {
+                pos = pm[i].indexOf("=");
+                key = pm[i].substr(0, pos);
+                value = pm[i].substr(pos + 1, pm[i].length - pos - 1);
+                value = decodeURIComponent(value);
+                if (param[key]) {
+                    if (Object.prototype.toString.call(param[key]) === '[object Array]') {
+                        param[key].push(value);
+                    } else {
+                        param[key] = [param[key], value];
+                    }
+                } else {
+                    param[key] = value;
+                }
+            }
+            return param;
+        },//}}}
+
+
         addParams: function (url, params) 
         {//{{{
-            var paramStr;
+            var paramStr, matches, urlParam;
             if (!url) return "";
+            if (!params) params = {};
             if (url.indexOf('#') != -1) {
                 url = url.replace(/\#.*/, '');
+            }
+            matches = url.match(/\?(.+)/);
+            if (matches && matches[1]) {
+                urlParam = this.stringToParam(matches[1]);
+                if (urlParam) {
+                    params = this.mergeTwoParamters(urlParam, params);
+                    url = url.replace(/\?.+/, '');
+                }
             }
             paramStr = this.stringifyParam(params);
             if (!paramStr) return url;
@@ -112,7 +128,14 @@
                 }
             }
             return str.join('; ');
-        }
+        },
+        mergeTwoParamters: function (obj1, obj2)
+        {//{{{
+            var obj3 = {}, attrname;
+            for (attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+            for (attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+            return obj3;
+        }//}}}
 
     };
 

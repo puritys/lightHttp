@@ -27,14 +27,19 @@ describe("Test Browser Get", function () {//{{{
         assert.equal("test?age=13&name=Joe", window.location.href);
     });
 
+    it("include urlencode string at url", function () {
+        obj.get("test?name=Joe%20Johnson", {});
+        assert.equal("test?name=Joe%20Johnson", window.location.href);
+    });
+
     it("include space at parameter", function () {
         obj.get("test", {"age":13, "name": "Joe Johnson"});
         assert.equal("test?age=13&name=Joe%20Johnson", window.location.href);
     });
 
-    it("include space at url paramater(Not handle)", function () {
-        obj.get("test?name=Joe Johnson", {"age":13});
-        assert.equal("test?name=Joe Johnson&age=13", window.location.href);
+    it("include space at url paramater", function () {
+        obj.get("test?name=Joe Johnson&b=c", {"name": "Joe Johnson", "s":1});
+        assert.equal("test?name=Joe%20Johnson&b=c&s=1", window.location.href);
     });
 
     it("Set array into parameter", function () {
