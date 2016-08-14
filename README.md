@@ -34,8 +34,13 @@ npm install -g light-http
     });
     
     // Method POST
-    http.post(url, {"key":"value"}, header, function(response) {
-        xxx
+    http.post(url, {"key":"value"}, header, function(content, err, respObj) {
+        if (!err) {
+            console.log("Response content = ", content);
+            console.log("Response header = ", respObj.headers);
+            console.log("Response binary data = ", respObj.binary);
+        }
+        
     });
 
 
@@ -48,15 +53,15 @@ npm install -g light-http
     
     // Method GET
     http.get(url, {"key":"value"}, header)
-        .then(function(response) {
-            xxx
-        });
+    .then(function(response) {
+        ...
+    }, function (err) {...});
     
     // Method POST
     http.post(url, {"key":"value"}, header)
-        .then(function(response) {
-            xxx
-        });
+    .then(function(response) {
+        ...
+    }, function (err) {...});
 
 
 
@@ -121,15 +126,10 @@ You have two ways to indicate this library to use https protocol
     "\r\n"].join("\r\n");
     
     http.rawRequest(url, port, msg)
-        .then(function (resp) {
-            console.log(resp);
-        });
+    .then(function (resp) {
+        console.log(resp);
+    });
 
-
-HTTP Request Error Handling
-----------------------------
-
-    { [Error: connect ENETUNREACH] code: 'ENETUNREACH', errno: 'ENETUNREACH', syscall: 'connect' }
 
 
 Using lightHttp library on client side browser

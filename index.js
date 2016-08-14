@@ -55,6 +55,22 @@ o.merge = function (obj1, obj2)
     return obj3;
 };//}}}
 
+o.mergeBuffer = function (bufs) {//{{{
+    var buffer, length = 0, index = 0;
+    bufs.map(function (buf) {
+        length += buf.length;
+    });
+    buffer = new Buffer(length);
+
+    bufs.map(function (buf, i) {
+        buf.copy(buffer, index, 0, buf.length);
+        index += buf.length;
+    });
+
+    return buffer;
+};//}}}
+
+
 o.addFile = function (field, filePath) 
 {//{{{
     var fileName, content, mat;
@@ -182,7 +198,7 @@ o.put = function (url, param, header, callback)
 
 o.request = function (method, url, param, header, callback) 
 {//{{{
-    var len, req, options = {}, urlInfo, resp = "", fUrl = "", self,
+    var len, req, options = {}, urlInfo, resp = "", bufs = [], fUrl = "", self,
         isSync = false, defer, postData;
     self = this;
     if (typeof(callback) === "undefined" && 
@@ -249,7 +265,8 @@ o.request = function (method, url, param, header, callback)
         hostname: urlInfo.host,
         port: urlInfo.port,
         method: method,
-        path: fUrl
+        path: fUrl,
+        encoding: null
     };
 
     if ("https" === urlInfo['protocol']) {
@@ -266,8 +283,9 @@ o.request = function (method, url, param, header, callback)
     options.headers = header;
     var q = req.request(options, function (r) {
         r.on("data", function (chunk) {
-            resp += chunk;
+            bufs.push(chunk);
         });
+
         r.on("end", function () {
             if (r.headers) self.setResponseHeaders(r.headers);
             self.appendResponseHeader("status-code", r.statusCode);
@@ -276,20 +294,22 @@ o.request = function (method, url, param, header, callback)
                 (r.statusCode === 301 || r.statusCode === 302)) {
                 self.redirectToLocation(r.headers, defer, callback, isSync);
             } else {
+                resp = self.mergeBuffer(bufs);
                 if (true === isSync) {
-                    defer.resolve(resp);
+                    defer.resolve(resp.toString, null, {"headers":r.readers, "binary": resp});
                 } else {
-                    callback(resp);
+                    callback(resp.toString, null, {"headers": r.readers,"binary": resp});
                 }
             }
         });
     });
     q.on("error", function(err) {
-        err = JSON.stringify(err);
+        //console.log(err)
+        //err = JSON.stringify(err);
         if (true === isSync) {
             defer.reject(err);
         } else {
-            callback(err);
+            callback(null, err);
         }
     });
 

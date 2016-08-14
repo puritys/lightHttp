@@ -13,3 +13,18 @@ describe("Test merge", function () {
     });
 });
 
+describe('Test merge buffer', () => {
+    it('normal case', () => {
+        var bufs = [], buf1, buf2, res;
+        buf1 = new Buffer(3);
+        buf1.write("abc");
+        buf2 = new Buffer(3)
+        buf2.write("def");
+        bufs.push(buf1); bufs.push(buf2);
+        res = obj.mergeBuffer(bufs);
+
+        assert.equal(97, res[0]);
+        assert.equal(102, res[5]);
+
+    });
+});

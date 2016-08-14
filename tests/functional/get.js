@@ -23,7 +23,7 @@ describe("Test HTTP GET", function () {
     });
 });
 
-describe("Test HTTPS with self signatured certification", function () {
+describe("Test HTTPS with self signatured certification", function () {//{{{
 
     var resp, respHeader;
     before(function (done) {
@@ -40,9 +40,9 @@ describe("Test HTTPS with self signatured certification", function () {
         assert.equal(11, resp.unit);
     });
 
-});
+});//}}}
 
-describe("Test HTTPS are passed  by ssl host verification", function () {
+describe("Test HTTPS are passed  by ssl host verification", function () {//{{{
     var resp, respHeader;
     before(function (done) {
         var header = {unit: 11};
@@ -63,7 +63,7 @@ describe("Test HTTPS are passed  by ssl host verification", function () {
         assert.equal(11, resp.unit);
     });
 
-});
+});//}}}
 
 describe("Test HTTP GET Promise", function () {//{{{
     var resp1, resp1Header;
@@ -215,4 +215,37 @@ describe("Test following location - no redirect", function () {//{{{
     });
 
 });//}}}
+
+describe('Test 404 error callback', () => {//{{{
+    var error;
+    before(function(done) {
+        lightHttp.get("http://fawfawf", "", "", function(text, err) {
+            error = err;
+            done(text, err);
+        });
+       
+    })
+    it('test', () => {
+        console.log(error);
+        assert.equal("getaddrinfo", error.syscall);
+    });
+});//}}}
+
+describe('Test 404 error promise', () => {//{{{
+    var error;
+    before(function (done) {
+        lightHttp.get("http://fawfawf", "", "")
+        .then(function(text) {
+            console.log(text);
+        }, function (err) {
+            error = err;
+            done();
+        });
+    });
+
+    it('test', () => {
+        assert.equal("getaddrinfo", error.syscall);
+    });
+});//}}}
+
 
