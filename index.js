@@ -296,9 +296,9 @@ o.request = function (method, url, param, header, callback)
             } else {
                 resp = self.mergeBuffer(bufs);
                 if (true === isSync) {
-                    defer.resolve(resp.toString, null, {"headers":r.readers, "binary": resp});
+                    defer.resolve(resp.toString(), null, {"headers":r.readers, "binary": resp});
                 } else {
-                    callback(resp.toString, null, {"headers": r.readers,"binary": resp});
+                    callback(resp.toString(), null, {"headers": r.readers,"binary": resp});
                 }
             }
         });
