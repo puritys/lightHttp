@@ -13,12 +13,14 @@ var Q = require('q');
 var debugMode = false;
 var lib = require('./lib.js');
 var mime = require('mime'); 
+var _ = require('underscore');
 
 function lightHttp() {
     this.uploadFiles = [];
     this.respHeaders = {};
     this.httpsAgent = "";
     this.followLocation = true;
+    this.responseDetail = {};
 }
 
 var o = lightHttp.prototype;
@@ -45,6 +47,10 @@ o.disableDebugMode = function ()
 o.enableDebugMode = function()
 {
     debugMode = true;
+};
+
+o.getResponseDetail = function () {
+    return this.responseDetail;
 };
 
 o.merge = function (obj1, obj2)
@@ -295,17 +301,16 @@ o.request = function (method, url, param, header, callback)
                 self.redirectToLocation(r.headers, defer, callback, isSync);
             } else {
                 resp = self.mergeBuffer(bufs);
+                self.responseDetail = {"headers":r.headers, "binary": resp};
                 if (true === isSync) {
-                    defer.resolve(resp.toString(), null, {"headers":r.readers, "binary": resp});
+                    defer.resolve(resp.toString());
                 } else {
-                    callback(resp.toString(), null, {"headers": r.readers,"binary": resp});
+                    callback(resp.toString(),null, _.clone(self.responseDetail));
                 }
             }
         });
     });
     q.on("error", function(err) {
-        //console.log(err)
-        //err = JSON.stringify(err);
         if (true === isSync) {
             defer.reject(err);
         } else {

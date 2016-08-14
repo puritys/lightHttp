@@ -248,4 +248,37 @@ describe('Test 404 error promise', function() {//{{{
     });
 });//}}}
 
+describe('Test binary callback', function() {//{{{
+    var error, res;
+    before(function (done) {
+        lightHttp.get("http://www.puritys.me/unit.php", "", "", function(text, err, obj) {
+            res = obj;
+            done();
+        });
+    });
+
+    it('test', function() {
+        assert.equal(200, res.headers['status-code']);
+        assert.equal(true, res.binary instanceof Buffer);
+    });
+});//}}}
+
+
+describe('Test binary promise', function() {//{{{
+    var res;
+    before(function (done) {
+        lightHttp.get("http://www.puritys.me/unit.php", "", "")
+        .then(function(text, err, obj) {
+            res = lightHttp.getResponseDetail();
+            done();
+        }, function (err) {
+        });
+    });
+
+    it('test', function() {
+        assert.equal(200, res.headers['status-code']);
+        assert.equal(true, res.binary instanceof Buffer);
+    });
+});//}}}
+
 
