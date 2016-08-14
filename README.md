@@ -9,7 +9,7 @@ You can use this library on server side Node.js  and client side JavaScript.
 [[中文文件] (http://puritys.github.io/lightHttp/dest/tw/index.html)]
 
 
-Travis CI status: [![Unit testing](https://travis-ci.org/puritys/lightHttp.png?branch=master)](https://travis-ci.org/puritys/lightHttp) [![Coverage Status](https://coveralls.io/repos/puritys/lightHttp/badge.png?branch=master)](https://coveralls.io/r/puritys/lightHttp?branch=master)
+Travis CI status: [![Unit testing](https://travis-ci.org/puritys/lightHttp.png?branch=master)](https://travis-ci.org/puritys/lightHttp)[![Coverage Status](https://coveralls.io/repos/github/puritys/lightHttp/badge.svg?branch=master)](https://coveralls.io/github/puritys/lightHttp?branch=master)
 
 
 Let's try it !
