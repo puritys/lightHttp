@@ -263,7 +263,6 @@ describe('Test binary callback', function() {//{{{
     });
 });//}}}
 
-
 describe('Test binary promise', function() {//{{{
     var res;
     before(function (done) {
@@ -281,4 +280,35 @@ describe('Test binary promise', function() {//{{{
     });
 });//}}}
 
+describe('Test get binary image callback', function() {//{{{
+    var res;
+    before(function (done) {
+        lightHttp.get("https://www.puritys.me/templates/static/images/btn/fbShare.png", {}, {}, function (resp, err, respObj) {
+            res = respObj.binary;
+            done();
+        });
+    });
+    it('png', function() {
+        assert.equal(1850, res.length);
+        assert.equal(0x89, Number(res[0]));
+        assert.equal(0x82, res.readUInt8(1849));
+    });
+});//}}}
+
+describe('Test get binary image promise', function() {//{{{
+    var res;
+    before(function (done) {
+        lightHttp.get("https://www.puritys.me/templates/static/images/btn/fbShare.png", {}, {})
+        .then(function (resp) {
+            res = lightHttp.getResponseDetail();
+            res = res.binary;
+            done();
+        });
+    });
+    it('png', function() {
+        assert.equal(1850, res.length);
+        assert.equal(0x89, Number(res[0]));
+        assert.equal(0x82, res.readUInt8(1849));
+    });
+});//}}}
 
