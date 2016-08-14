@@ -216,7 +216,7 @@ describe("Test following location - no redirect", function () {//{{{
 
 });//}}}
 
-describe('Test 404 error callback', () => {//{{{
+describe('Test 404 error callback', function() {//{{{
     var error;
     before(function(done) {
         lightHttp.get("http://fawfawf", "", "", function(text, err) {
@@ -225,13 +225,13 @@ describe('Test 404 error callback', () => {//{{{
         });
        
     })
-    it('test', () => {
+    it('test', function() {
         console.log(error);
         assert.equal("getaddrinfo", error.syscall);
     });
 });//}}}
 
-describe('Test 404 error promise', () => {//{{{
+describe('Test 404 error promise', function() {//{{{
     var error;
     before(function (done) {
         lightHttp.get("http://fawfawf", "", "")
@@ -243,7 +243,7 @@ describe('Test 404 error promise', () => {//{{{
         });
     });
 
-    it('test', () => {
+    it('test', function() {
         assert.equal("getaddrinfo", error.syscall);
     });
 });//}}}
