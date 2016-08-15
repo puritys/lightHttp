@@ -1,3 +1,4 @@
+/*global Buffer*/
 /*
  * http://www.w3.org/Protocols/rfc1341/7_2_Multipart.html
  * 
@@ -180,7 +181,7 @@ o.redirectToLocation = function (headers, defer, callback, isSync)
                 callback(text);
             });
     }
-}//}}}
+};//}}}
 
 o.get = function(url, param, header, callback) 
 {//{{{
