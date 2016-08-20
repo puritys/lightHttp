@@ -312,3 +312,21 @@ describe('Test get binary image promise', function() {//{{{
     });
 });//}}}
 
+describe("Test special cases", function () {//{{{
+    var ret, url, content;
+    before(function (done) {
+        url = "http://www.puritys.me/\n";
+        ret = lightHttp.get(url, "", function (resp, err, obj) {
+            if (err) content = err;
+            else  content = obj.headers['status-code'];
+            done();
+        });
+       
+    });
+    it("A break line", function () {
+        console.log(content);
+        assert.equal(200, content);
+    });
+});
+
+

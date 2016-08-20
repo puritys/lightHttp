@@ -268,6 +268,8 @@ o.request = function (method, url, param, header, callback)
     } else {
         fUrl += "?" + lib.stringifyParam(param);
     }
+    if (fUrl) fUrl = fUrl.replace(/[\n\r]+/, '');
+
     options = {
         hostname: urlInfo.host,
         port: urlInfo.port,
