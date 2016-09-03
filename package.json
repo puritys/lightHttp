@@ -1,6 +1,6 @@
 {
   "name": "light-http",
-  "version": "1.4.4",
+  "version": "1.4.6",
   "description": "A really light library for HTTP request.",
   "main": "index.js",
   "files": [
@@ -9,7 +9,8 @@
     "lib.js",
     "lightHttp.js",
     "lightHttp.min.js",
-    "lightHttp-simple.min.js"
+    "lightHttp-simple.min.js",
+    "lightHttp-simple.js"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
