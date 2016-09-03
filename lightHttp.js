@@ -329,4 +329,8 @@ var Q = require('q');
     };//}}}
 
     window.lightHttp = lightHttp;
+    if (module) {
+        module = module.exports = new lightHttp();
+        module.constructor = lightHttp;
+    }
 }());
