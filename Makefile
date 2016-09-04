@@ -20,8 +20,10 @@ browserify:
 
 # mark q
 compressWithoutQ:
-	browserify lightHttp.js  -o lightHttp-simple.js
-	java -jar  /usr/local/lib/java/yuicompressor-2.4.6.jar --charset utf8 --type js -o lightHttp-simple.min.js  lightHttp-simple.js
+	cp lightHttp.js lightHttp-simple.js
+	browserify lightHttp.js  -o lightHttp-simple-browserify.js
+	java -jar  /usr/local/lib/java/yuicompressor-2.4.6.jar --charset utf8 --type js -o lightHttp-simple.min.js  lightHttp-simple-browserify.js
+	rm lightHttp-simple-browserify.js
 
 watch:
 	gmake killWatch
