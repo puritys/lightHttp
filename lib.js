@@ -35,6 +35,7 @@
 
             if (matches && matches[5]) {
                 ret['param'] = this.stringToParam(matches[5]);
+                ret['paramStr'] = matches[5];
             }
 
             return ret;

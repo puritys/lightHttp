@@ -22,6 +22,8 @@ describe("Test parseUrl", function () {//{{{
         assert.equal('/index.js', ret.path);
         assert.equal('http', ret.protocol);
         assert.equal('value', ret.param.key);
+        assert.equal('key=value', ret.paramStr);
+
     });
 
     it("url with array paramter", function () {

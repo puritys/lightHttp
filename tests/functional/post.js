@@ -58,23 +58,43 @@ describe("Test HTTP POST Promise2", function () {
 
 });
 
-describe("Test HTTP POST a raw string", function () {
+describe("Test HTTP POST a raw parameter string", function () {
     var resp;
     before(function (done) {
-        lightHttp.post(baseUrl + "/unit.php?z=p&c=1&c=2", 'a[0]=b&a[1]=c')
+        lightHttp.post(baseUrl + "/unit.php?z=p&c=1&c=2", 'a[0]=b&a[1]=c&z=a')
             .then(function (response) {
                 resp = response;
                 done();
             });
     }); 
 
-    it("post a JSON string", function () {
+    it("handle a JSON string", function () {
         var data;
         data = JSON.parse(resp);
         //console.log(data);
         assert.equal('[\"b\",\"c\"]', data.a);
-        assert.equal('p', data.z);
-        assert.equal('["1","2"]', data.c);
+        assert.equal('a', data.z);
+        //assert.equal('["1","2"]', data.c);
+    });
+
+});
+
+
+describe("Test HTTP POST a raw JSON string", function () {
+    var resp;
+    before(function (done) {
+        lightHttp.post(baseUrl + "/unit.php?rawJson=1", '{"a":["b","c"],"z":"a"}')
+            .then(function (response) {
+                resp = response;
+                done();
+            });
+    }); 
+
+    it("handle a JSON string", function () {
+        var data;
+        data = JSON.parse(resp);
+        assert.equal("b", data.a[0]);
+        assert.equal('a', data.z);
     });
 
 });

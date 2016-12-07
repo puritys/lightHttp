@@ -233,23 +233,19 @@ o.request = function (method, url, param, header, callback)
     }
     method = method.toUpperCase();
     urlInfo = lib.parseUrl(url);
-    fUrl += urlInfo.path;
     if (typeof(param) === "undefined") {
         param = {};
     }
 
-    if (urlInfo.param) {
-        if (param instanceof Object) {
-            param = this.merge(param, urlInfo.param);
-        } else {
-            param += '&' + lib.stringifyParam(urlInfo.param);
-        }
-    }
+
+    fUrl = urlInfo.path;
 
     if (("POST" === method ||
          "PUT" === method
         ) && 
-        typeof(param) != "undefined") {
+        typeof(param) != "undefined"
+    ) {
+        if (urlInfo.paramStr) fUrl += "?" + urlInfo.paramStr;
         if (this.isMultipart) {
             var b = this.createMultipartData(param);
             header["content-type"] = "multipart/form-data; boundary=" + b['boundary'];
@@ -266,6 +262,14 @@ o.request = function (method, url, param, header, callback)
             header['content-length'] = postData.length; 
         }
     } else {
+        //Method Get
+        if (urlInfo.param) {
+            if (param instanceof Object) {
+                param = this.merge(param, urlInfo.param);
+            } else {
+                param += '&' + lib.stringifyParam(urlInfo.param);
+            }
+        }
         fUrl += "?" + lib.stringifyParam(param);
     }
     if (fUrl) fUrl = fUrl.replace(/[\n\r]+/, '');
