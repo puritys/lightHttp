@@ -258,7 +258,10 @@ o.request = function (method, url, param, header, callback)
             } else {
                 postData = param;
             }
-            header['content-type'] = 'application/x-www-form-urlencoded';
+            if (!header['content-type']) {
+                // User can set content-type by himself.
+                header['content-type'] = 'application/x-www-form-urlencoded';
+            }
             header['content-length'] = postData.length; 
         }
     } else {

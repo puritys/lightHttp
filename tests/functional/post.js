@@ -83,7 +83,7 @@ describe("Test HTTP POST a raw parameter string", function () {
 describe("Test HTTP POST a raw JSON string", function () {
     var resp;
     before(function (done) {
-        lightHttp.post(baseUrl + "/unit.php?rawJson=1", '{"a":["b","c"],"z":"a"}')
+        lightHttp.post(baseUrl + "/unit.php?rawJson=1", '{"a":["b","c"],"z":"a"}', {"content-type": "application/json"})
             .then(function (response) {
                 resp = response;
                 done();
