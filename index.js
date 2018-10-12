@@ -176,10 +176,7 @@ o.redirectToLocation = function (headers, defer, callback, isSync)
                 defer.resolve(text);
             });
     } else {
-        this.get(url, {}, {})
-            .then(function (text) {
-                callback(text);
-            });
+        this.get(url, {}, {}, callback);
     }
 };//}}}
 
