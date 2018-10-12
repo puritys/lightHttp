@@ -1,6 +1,6 @@
 {
   "name": "light-http",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "description": "A really light library for HTTP request.",
   "main": "index.js",
   "files": [
